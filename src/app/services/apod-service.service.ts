@@ -7,10 +7,11 @@ export class ApodServiceService {
 
   constructor(private http: HttpClient) { }
 
-  getApodArray(){
-    return this.http.get('/api').pipe(
-      map((apodArray)=>{
-        return apodArray;
+  getTenApodJSON(){
+    return this.http.get('/api/10apod').pipe(
+      map((tenApodJSON: {tenApodArray: []})=>{
+        let tenApodArray = tenApodJSON.tenApodArray;
+        return tenApodArray;
       })
     );
   }

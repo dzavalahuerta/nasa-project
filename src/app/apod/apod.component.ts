@@ -7,14 +7,18 @@ import { ApodServiceService } from '../services/apod-service.service';
   styleUrls: ['./apod.component.css']
 })
 export class APODComponent implements OnInit {
-  apodArray: {};
+  tenApodArray: [];
 
   constructor(private apodService: ApodServiceService) { }
 
   ngOnInit() {
-    this.apodService.getApodArray()
-      .subscribe((apodArray)=>{
-        this.apodArray = apodArray;
+    this.apodService.getTenApodJSON()
+      .subscribe((tenApodArray)=>{
+        this.tenApodArray = tenApodArray;
       });
+  }
+
+  while () {
+    // maybe for the scroll feature
   }
 }
