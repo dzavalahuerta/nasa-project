@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApodServiceService } from '../services/apod-service.service';
 
 @Component({
   selector: 'app-apod',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./apod.component.css']
 })
 export class APODComponent implements OnInit {
+  apodArray: {};
 
-  constructor() { }
+  constructor(private apodService: ApodServiceService) { }
 
   ngOnInit() {
+    this.apodService.getApodArray()
+      .subscribe((apodArray)=>{
+        this.apodArray = apodArray;
+      });
   }
-
 }
