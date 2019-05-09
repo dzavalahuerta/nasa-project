@@ -22,3 +22,8 @@
     </div>
   </div>
 </div>
+<button
+  *ngIf="checkPageYOffset()"
+  class="btn btn-success position-fixed position" 
+  (click)="scrollUp()"
+>Scroll Up</button>

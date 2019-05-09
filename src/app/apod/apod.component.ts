@@ -12,16 +12,25 @@ import { Subscription } from 'rxjs';
 })
 export class APODComponent implements OnInit, OnDestroy {
   cccServiceSpecificApodSubscription: Subscription;
-
   apodArray: [] = [];
   infiniteScrollToggle = false;
-
 
   constructor(private serverService: ServerService,
               private cccService: CrossComponentCommunicationService,
               public sanitizer: DomSanitizer) { }
 
+  checkPageYOffset(){
+    if(window.pageYOffset > 500){
+      return true;
+    }
+    else if(window.pageYOffset <= 500){
+      return false;
+    }
+  }
+
   ngOnInit() {
+    window.addEventListener('scroll', this.checkPageYOffset, true);
+
     this.cccServiceSpecificApodSubscription = this.cccService.userInputApod
       .subscribe((specificApod: [])=>{
         this.apodArray = specificApod;
@@ -36,6 +45,13 @@ export class APODComponent implements OnInit, OnDestroy {
       });
   }
 
+  scrollUp(){
+    window.scroll({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+  
   getDateForNextBatch(){
     let indexOfLastItem = this.apodArray.length-1;
     let lastItem: {date: string} = this.apodArray[indexOfLastItem];
@@ -61,5 +77,6 @@ export class APODComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.cccServiceSpecificApodSubscription.unsubscribe();
+    window.removeEventListener('scroll', this.checkPageYOffset, true);
   }
 }
