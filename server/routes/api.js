@@ -2,86 +2,73 @@ const express = require('express');
 const router = express.Router();
 const asyncHandler = require('express-async-handler')
 const axios = require('axios');
-
 const apodAPI = "https://api.nasa.gov/planetary/apod";
+const apiKey = 'gtVd6XMsShimUg52FqajelftZwHWosfHJc3FtCdQ';
+
+// dont forget to delete for production
 let counter = 0;
-// get 10 Astronomy Pictures of the Day
+
 router.get('/10apod/:id',asyncHandler(async(req,res)=>{
     console.log(`response ${counter} has begun`);
     counter += 1;
-
+    
     const tenApodJSON = {tenApodArray: []};
-
+    
     let date = req.params.id;
     console.log(date);
-
+    
     let calculatedDate = new Date(date);
-    let calyear = calculatedDate.getFullYear();
-    let calmonth = calculatedDate.getMonth()+1;
-    let calday = calculatedDate.getDate();
+    let calYear = calculatedDate.getFullYear();
+    let calMonth = calculatedDate.getMonth()+1;
+    let calDay = calculatedDate.getDate();
     console.log(calculatedDate);
-    console.log(calday);
-
+    console.log(calDay);
+    
     while (tenApodJSON.tenApodArray.length < 10) {
-        if(calday <= 10){
-            for (let i = 0; i < calday; i++) {
-                //just in case this loop gets run
-                if(tenApodJSON.tenApodArray.length === 10){
-                    break;
-                }
-
-                await axios.get(`${apodAPI}?date=${calyear}-${calmonth}-${calday-i}&api_key=gtVd6XMsShimUg52FqajelftZwHWosfHJc3FtCdQ`)
+        if(calDay <= 10){
+            for (let i = 0; i < calDay; i++) {
+                await axios.get(`${apodAPI}?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`)
                 .then(apod=>{
                     tenApodJSON.tenApodArray.push(apod.data);
                 });
             }
-            
-            // this is to make sure no more code is run since we already reached 10 items
-            // in the array. Also reseting the month and day is not necessary if the loop
-            // above broke instead of finishing since that would mean there are still some
-            // days left to loop through in that month
-            if(tenApodJSON.tenApodArray.length === 10){
-                break;
-            }
-
-            if(calmonth > 1){
-                calmonth -= 1;
-            }
-            else{
-                calmonth = 12;
-            }
-
-            if(calmonth === 2){
-                calday = 28;
-            }
-            else if(calmonth === 4 || calmonth === 6 || calmonth === 9 || calmonth === 11){
-                calday = 30;
-            }
-            else{
-                calday = 31;
-            }
-            
-            if(calmonth === 12 && calday === 31){
-                calyear -= 1;
+            if(tenApodJSON.tenApodArray.length < 10){
+                if(calMonth > 1){
+                    calMonth -= 1;
+                }
+                else{
+                    calMonth = 12;
+                }
+    
+                if(calMonth === 2){
+                    calDay = 28;
+                }
+                else if(calMonth === 4 || calMonth === 6 || calMonth === 9 || calMonth === 11){
+                    calDay = 30;
+                }
+                else{
+                    calDay = 31;
+                }
+                
+                if(calMonth === 12 && calDay === 31){
+                    calYear -= 1;
+                }
             }
         }
-    
-        if(calday >= 11){
-            for (let i = 0; i < calday; i++) {
-                // maybe this is not necessary
-                // 
-                // 
+        if(calDay >= 11){
+            for (let i = 0; i < calDay; i++) {
                 if(tenApodJSON.tenApodArray.length === 10){
                     break;
                 }
-
-                await axios.get(`${apodAPI}?date=${calyear}-${calmonth}-${calday-i}&api_key=gtVd6XMsShimUg52FqajelftZwHWosfHJc3FtCdQ`)
+                
+                await axios.get(`${apodAPI}?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`)
                 .then(apod=>{
                     tenApodJSON.tenApodArray.push(apod.data);
                 });
             }
         }
     }
+
     res.status(200).json(tenApodJSON);
 }));
 

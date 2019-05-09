@@ -14,11 +14,11 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.searchForm = new FormGroup({
-      'searchInput': new FormControl(null, Validators.required)
+      'searchFormInput': new FormControl(null, Validators.required)
     });
   }
 
   onSubmitSearchForm(){
-    this.cccService.getSpecificApod(this.searchForm.value.searchInput);
+    this.cccService.getUserInputApod(this.searchForm.value.searchFormInput);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ServerService } from '../services/server.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
@@ -10,8 +10,8 @@ import { Subscription } from 'rxjs';
   templateUrl: './apod.component.html',
   styleUrls: ['./apod.component.css']
 })
-export class APODComponent implements OnInit {
-  subscription: Subscription;
+export class APODComponent implements OnInit, OnDestroy {
+  cccServiceSpecificApodSubscription: Subscription;
 
   apodArray: [] = [];
   infiniteScrollToggle = false;
@@ -22,13 +22,13 @@ export class APODComponent implements OnInit {
               public sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    this.subscription = this.cccService.specificApod
+    this.cccServiceSpecificApodSubscription = this.cccService.userInputApod
       .subscribe((specificApod: [])=>{
         this.apodArray = specificApod;
       });
 
-    let newDate = new Date();
-    this.serverService.getTenApodJSON(newDate)
+    let currentDate = new Date();
+    this.serverService.getTenApodJSON(currentDate)
       .subscribe((tenApodArray)=>{
         tenApodArray.forEach(apod => {
           this.apodArray.push(apod);
@@ -36,33 +36,30 @@ export class APODComponent implements OnInit {
       });
   }
 
-  // getDateForNextBatch(){
-  //   let indexOfLastItem = this.apodArray.length-1;
-  //   let lastItem: {date: string} = this.apodArray[indexOfLastItem];
-  //   let dateForNextBatch = lastItem.date;
-  //   return dateForNextBatch;
-  // }
-
-  getTenMoreApod(){
-    // this is to prevent more than one request
-    // being triggered at once
-    this.infiniteScrollToggle = true;
-
-    // let date = this.getDateForNextBatch();
+  getDateForNextBatch(){
     let indexOfLastItem = this.apodArray.length-1;
     let lastItem: {date: string} = this.apodArray[indexOfLastItem];
-    let date = lastItem.date;
+    let dateForNextBatch = lastItem.date;
+    return dateForNextBatch;
+  }
 
-    this.serverService.getTenApodJSON(date)
+  getTenMoreApod(){
+    this.infiniteScrollToggle = true;
+
+    let dateForNextBatch = this.getDateForNextBatch();
+
+    this.serverService.getTenApodJSON(dateForNextBatch)
       .subscribe((tenApodArray)=>{
         tenApodArray.forEach((apod, index) => {
             this.apodArray.push(apod);
-          // this is to make sure another request
-          // will not be made until the last request is rendered.
           if(index === tenApodArray.length-1){
             this.infiniteScrollToggle = false;
           }
         });
       });
+  }
+
+  ngOnDestroy(){
+    this.cccServiceSpecificApodSubscription.unsubscribe();
   }
 }

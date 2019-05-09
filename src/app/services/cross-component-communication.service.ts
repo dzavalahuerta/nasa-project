@@ -4,15 +4,11 @@ import { ServerService } from './server.service';
 
 @Injectable()
 export class CrossComponentCommunicationService {
-  specificApod = new Subject();
+  userInputApod = new Subject();
   
   constructor(private serverService: ServerService) { }
-  
-  // this along with this.specificApod allows the user input from
-  // the NavbarComponents form to be used to find a new apod from
-  // the API and send it to the APODComponent so that it could
-  // render the apod and the 9 days that follow it.
-  getSpecificApod(userInput){
+
+  getUserInputApod(userInput){
     // i had to do this to take advantage of the fact
     // that for some reason the RESTAPI subtracts 1 off
     // of the day so instead of changing it, because it 
@@ -27,7 +23,7 @@ export class CrossComponentCommunicationService {
 
     this.serverService.getTenApodJSON(correctDate)
       .subscribe((tenApodArray)=>{
-        this.specificApod.next(tenApodArray);
+        this.userInputApod.next(tenApodArray);
       });
   }
 }
