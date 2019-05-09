@@ -13,11 +13,14 @@ router.get('/10apod/:id',asyncHandler(async(req,res)=>{
     const tenApodJSON = {tenApodArray: []};
 
     let date = req.params.id;
+    console.log(date);
 
     let calculatedDate = new Date(date);
     let calyear = calculatedDate.getFullYear();
     let calmonth = calculatedDate.getMonth()+1;
     let calday = calculatedDate.getDate();
+    console.log(calculatedDate);
+    console.log(calday);
 
     while (tenApodJSON.tenApodArray.length < 10) {
         if(calday <= 10){

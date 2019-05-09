@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -6,10 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  searchForm: FormGroup;
 
-  constructor() { }
+  constructor(private cccService: CrossComponentCommunicationService) { }
 
   ngOnInit() {
+    this.searchForm = new FormGroup({
+      'searchInput': new FormControl(null, Validators.required)
+    });
   }
 
+  onSubmitSearchForm(){
+    this.cccService.getSpecificApod(this.searchForm.value.searchInput);
+  }
 }
