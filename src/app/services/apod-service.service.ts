@@ -7,8 +7,8 @@ export class ApodServiceService {
 
   constructor(private http: HttpClient) { }
 
-  getTenApodJSON(){
-    return this.http.get('/api/10apod').pipe(
+  getTenApodJSON(date){
+    return this.http.get(`/api/10apod/${date}`).pipe(
       map((tenApodJSON: {tenApodArray: []})=>{
         let tenApodArray = tenApodJSON.tenApodArray;
         return tenApodArray;

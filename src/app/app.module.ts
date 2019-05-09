@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 
 import { AppComponent } from './app.component';
@@ -22,7 +23,8 @@ const Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(Routes),
-    HttpClientModule
+    HttpClientModule,
+    InfiniteScrollModule
   ],
   providers: [ApodServiceService],
   bootstrap: [AppComponent]

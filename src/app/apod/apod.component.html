@@ -1,8 +1,14 @@
-<div class="container">
-  <div *ngFor='let apod of tenApodArray; let i = index' class="card mb-3">
+<div class="container"
+     infiniteScroll
+     [infiniteScrollDistance]="1"
+     [infiniteScrollThrottle]="50"
+     [infiniteScrollDisabled]='infiniteScrollToggle'
+     (scrolled)="getTenMoreApod()">
+  <div *ngFor='let apod of apodArray' class="card mb-3">
     <img *ngIf="apod.media_type === 'image'" class="card-img-top" [src]='apod.hdurl' alt="image of {{apod.title}}">
     <div *ngIf="apod.media_type === 'video'" class="embed-responsive embed-responsive-16by9">
-      <iframe *ngIf="apod.media_type === 'video'" class="embed-responsive-item" src="https://player.vimeo.com/video/284290238?portrait=0" allowfullscreen></iframe>
+      <!-- the link in the src of the iframe is so that the videos can work -->
+      <iframe *ngIf="apod.media_type === 'video'" class="embed-responsive-item" [src]='sanitizer.bypassSecurityTrustResourceUrl(apod.url)' allowfullscreen></iframe>
     </div>
     <div class="card-body">
       <h5 class="card-title">{{apod.title}}</h5>
