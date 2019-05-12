@@ -2,19 +2,19 @@ const express = require('express');
 const router = express.Router();
 const asyncHandler = require('express-async-handler')
 const axios = require('axios');
-const apodAPI = "https://api.nasa.gov/planetary/apod";
+const API = "https://api.nasa.gov";
 const apiKey = 'gtVd6XMsShimUg52FqajelftZwHWosfHJc3FtCdQ';
 
 // dont forget to delete for production
 let counter = 0;
 
-router.get('/10apod/:id',asyncHandler(async(req,res)=>{
+router.get('/10apod/:date',asyncHandler(async(req,res)=>{
     console.log(`response ${counter} has begun`);
     counter += 1;
     
     const tenApodJSON = {tenApodArray: []};
     
-    let date = req.params.id;
+    let date = req.params.date;
     console.log(date);
     
     let calculatedDate = new Date(date);
@@ -27,7 +27,7 @@ router.get('/10apod/:id',asyncHandler(async(req,res)=>{
     while (tenApodJSON.tenApodArray.length < 10) {
         if(calDay <= 10){
             for (let i = 0; i < calDay; i++) {
-                await axios.get(`${apodAPI}?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`)
+                await axios.get(`${API}/planetary/apod?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`)
                 .then(apod=>{
                     tenApodJSON.tenApodArray.push(apod.data);
                 });
@@ -61,15 +61,35 @@ router.get('/10apod/:id',asyncHandler(async(req,res)=>{
                     break;
                 }
                 
-                await axios.get(`${apodAPI}?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`)
+                await axios.get(`${API}/planetary/apod?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`)
                 .then(apod=>{
                     tenApodJSON.tenApodArray.push(apod.data);
                 });
             }
         }
     }
-
     res.status(200).json(tenApodJSON);
+}));
+
+router.get('/missionManifest/:roverName',asyncHandler(async(req,res)=>{
+    let roverName = req.params.roverName;
+    
+    await axios.get(`${API}/mars-photos/api/v1/manifests/${roverName}?api_key=${apiKey}`)
+    .then(missionManifest=>{
+        res.status(200).json(missionManifest.data.photo_manifest);
+    });
+}));
+
+// get the rover name, the sol, and the page
+router.get('/marsPhotos/:roverName/:sol/:pageNum',asyncHandler(async(req,res)=>{
+    let roverName = req.params.roverName;
+    let sol = req.params.sol;
+    let pageNum = req.params.pageNum;
+
+    await axios.get(`${API}/mars-photos/api/v1/rovers/${roverName}/photos?sol=${sol}&page=${pageNum}&api_key=${apiKey}`)
+    .then(photos=>{
+        res.status(200).json(photos.data.photos);
+    });
 }));
 
 module.exports = router;
