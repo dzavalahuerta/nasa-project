@@ -15,4 +15,12 @@ export class ServerService {
       })
     );
   }
+
+  getMissionManifest(roverName: string){
+    return this.http.get(`/api/missionManifest/${roverName}`);
+  }
+
+  getPageOfPhotosOfSol(roverName: string, sol, pageNum){
+    return this.http.get(`/api/marsPhotos/${roverName}/${sol}/${pageNum}`);
+  }
 }

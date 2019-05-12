@@ -13,7 +13,7 @@ app.get('*',(req,res)=>{
     res.sendFile(path.join(__dirname, "dist/nasa-project/index.html"));
 });
 
-const port = process.env.PORT || 4200;
+const port = process.env.PORT || 3000;
 app.listen(port,()=>{
    console.log(`running on port ${port}`);
 });
