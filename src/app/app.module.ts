@@ -11,30 +11,16 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { APODComponent } from './apod/apod.component';
 import { ServerService } from './services/server.service';
 import { CrossComponentCommunicationService } from './services/cross-component-communication.service';
-import { HomePageComponent } from './home-page/home-page.component';
-import { SpiritComponent } from './rover-components/spirit/spirit.component';
-import { CuriosityComponent } from './rover-components/curiosity/curiosity.component';
-import { OpportunityComponent } from './rover-components/opportunity/opportunity.component';
 
 const Routes = [
-  { path: '', component: HomePageComponent},
-  { path: 'apod', component: APODComponent},
-  { path: 'rovers', children: [
-    { path: 'curiosity', component: CuriosityComponent },
-    { path: 'opportunity', component: OpportunityComponent },
-    { path: 'spirit', component: SpiritComponent }
-  ]}
+  { path: '', component: APODComponent}
 ]
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    APODComponent,
-    HomePageComponent,
-    SpiritComponent,
-    CuriosityComponent,
-    OpportunityComponent
+    APODComponent
   ],
   imports: [
     BrowserModule,

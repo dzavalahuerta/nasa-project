@@ -29,8 +29,6 @@ export class APODComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    window.document.body.style.background = "white";
-
     window.addEventListener('scroll', this.checkPageYOffset, true);
 
     this.cccServiceSpecificApodSubscription = this.cccService.userInputApod
