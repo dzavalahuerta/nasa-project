@@ -6,11 +6,9 @@ const API = "https://api.nasa.gov";
 const apiKey = 'gtVd6XMsShimUg52FqajelftZwHWosfHJc3FtCdQ';
 
 router.get('/10apod/:date',asyncHandler(async(req,res)=>{
-    console.log('start of request');
     const tenApodJSON = {tenApodArray: []};
     
     let date = req.params.date;
-    console.log(date);
 
     let calculatedDate = new Date(date);
     let calYear = calculatedDate.getFullYear();
@@ -19,8 +17,25 @@ router.get('/10apod/:date',asyncHandler(async(req,res)=>{
     if(calMonth === 12 && calDay === 30){
         calDay += 1;
     }
-    console.log(calculatedDate);
+
     while (tenApodJSON.tenApodArray.length < 10) {
+        if(calYear === 1996 && calMonth === 1 && calDay <=10){
+            for (let i = 0; i < calDay; i++) {
+                await axios.get(`${API}/planetary/apod?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`)
+                .then(apod=>{
+                    tenApodJSON.tenApodArray.push(apod.data);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                    tenApodJSON.tenApodArray.push('');
+                });
+            }
+            break;
+        }
+        else if(calYear === 1995){
+            let error = new Error('There are no more Astronomy Pictures of the Day, you have made it to the end!');
+            return res.json({"error": error.message});
+        }
         if(calDay <= 10){
             for (let i = 0; i < calDay; i++) {
                 await axios.get(`${API}/planetary/apod?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`)
@@ -72,7 +87,6 @@ router.get('/10apod/:date',asyncHandler(async(req,res)=>{
             }
         }
     }
-    console.log('end of request');
     res.status(200).json(tenApodJSON);
 }));
 

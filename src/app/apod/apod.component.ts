@@ -12,6 +12,9 @@ import { Subscription } from 'rxjs';
 })
 export class APODComponent implements OnInit, OnDestroy {
   cccServiceSpecificApodSubscription: Subscription;
+  sanitize = (url)=>{
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
   apodArray: [] = [];
   infiniteScrollToggle = false;
 
@@ -37,13 +40,11 @@ export class APODComponent implements OnInit, OnDestroy {
     
     this.cccServiceSpecificApodSubscription = this.cccService.userInputApod
     .subscribe((specificApod: [])=>{
-      console.log(specificApod);
       specificApod.forEach((apod,index)=>{
         if(apod === ''){
           specificApod.splice(index, 1);
         }
       });
-      console.log(specificApod);
       this.apodArray = specificApod;
     });
     
