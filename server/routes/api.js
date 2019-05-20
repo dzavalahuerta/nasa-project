@@ -5,31 +5,31 @@ const axios = require('axios');
 const API = "https://api.nasa.gov";
 const apiKey = 'gtVd6XMsShimUg52FqajelftZwHWosfHJc3FtCdQ';
 
-// dont forget to delete for production
-let counter = 0;
-
 router.get('/10apod/:date',asyncHandler(async(req,res)=>{
-    console.log(`response ${counter} has begun`);
-    counter += 1;
-    
+    console.log('start of request');
     const tenApodJSON = {tenApodArray: []};
     
     let date = req.params.date;
     console.log(date);
-    
+
     let calculatedDate = new Date(date);
     let calYear = calculatedDate.getFullYear();
     let calMonth = calculatedDate.getMonth()+1;
     let calDay = calculatedDate.getDate();
+    if(calMonth === 12 && calDay === 30){
+        calDay += 1;
+    }
     console.log(calculatedDate);
-    console.log(calDay);
-    
     while (tenApodJSON.tenApodArray.length < 10) {
         if(calDay <= 10){
             for (let i = 0; i < calDay; i++) {
                 await axios.get(`${API}/planetary/apod?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`)
                 .then(apod=>{
                     tenApodJSON.tenApodArray.push(apod.data);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                    tenApodJSON.tenApodArray.push('');
                 });
             }
             if(tenApodJSON.tenApodArray.length < 10){
@@ -64,10 +64,15 @@ router.get('/10apod/:date',asyncHandler(async(req,res)=>{
                 await axios.get(`${API}/planetary/apod?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`)
                 .then(apod=>{
                     tenApodJSON.tenApodArray.push(apod.data);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                    tenApodJSON.tenApodArray.push('');
                 });
             }
         }
     }
+    console.log('end of request');
     res.status(200).json(tenApodJSON);
 }));
 

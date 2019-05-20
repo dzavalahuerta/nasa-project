@@ -30,21 +30,32 @@ export class APODComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     window.document.body.style.background = "white";
-
+    
+    this.cccService.currentlyOnApodRoute(true);
+    
     window.addEventListener('scroll', this.checkPageYOffset, true);
-
+    
     this.cccServiceSpecificApodSubscription = this.cccService.userInputApod
-      .subscribe((specificApod: [])=>{
-        this.apodArray = specificApod;
+    .subscribe((specificApod: [])=>{
+      console.log(specificApod);
+      specificApod.forEach((apod,index)=>{
+        if(apod === ''){
+          specificApod.splice(index, 1);
+        }
       });
-
+      console.log(specificApod);
+      this.apodArray = specificApod;
+    });
+    
     let currentDate = new Date();
     this.serverService.getTenApodJSON(currentDate)
-      .subscribe((tenApodArray)=>{
-        tenApodArray.forEach(apod => {
+    .subscribe((tenApodArray)=>{
+      tenApodArray.forEach(apod => {
+        if(apod != ''){
           this.apodArray.push(apod);
-        });
+        }
       });
+    });
   }
 
   scrollUp(){
@@ -69,7 +80,9 @@ export class APODComponent implements OnInit, OnDestroy {
     this.serverService.getTenApodJSON(dateForNextBatch)
       .subscribe((tenApodArray)=>{
         tenApodArray.forEach((apod, index) => {
+          if(apod != ''){
             this.apodArray.push(apod);
+          }
           if(index === tenApodArray.length-1){
             this.infiniteScrollToggle = false;
           }
@@ -78,6 +91,7 @@ export class APODComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
+    this.cccService.currentlyOnApodRoute(false);
     this.cccServiceSpecificApodSubscription.unsubscribe();
     window.removeEventListener('scroll', this.checkPageYOffset, true);
   }

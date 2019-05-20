@@ -1,25 +1,35 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse center" id="navbarTogglerDemo01">
-      <div class="linkCenter"><a class="navbar-brand d-inline-block" routerLink="apod">APOD</a></div>
-      <form [formGroup]='searchForm'
-      (ngSubmit)="onSubmitSearchForm()" 
-      class="form-inline my-2 my-md-0 center">
-        <input formControlName='searchFormInput' class="form-control mr-sm-2" type="search" placeholder="Example: 1998-07-08" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0 buttonCenter" type="submit">Search</button>
-      </form>
-      <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-        <li class="nav-item center">
-          <a class="nav-link" routerLink="/rovers/curiosity">Curiosity<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item center">
-          <a class="nav-link" routerLink="/rovers/opportunity">Opportunity</a>
-        </li>
-        <li class="nav-item center">
-          <a class="nav-link" routerLink="/rovers/spirit">Spirit</a>
-        </li>
-      </ul>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse center" id="navbarTogglerDemo01">
+  <div class="linkCenter"><a class="navbar-brand d-inline-block" routerLink="/apod">APOD</a></div>
+    <form [formGroup]='searchForm'
+          (ngSubmit)="onSubmitSearchForm()" 
+          class="form-inline my-2 my-md-0 center"
+          *ngIf="apodRoute">
+      <input formControlName='searchFormInput' class="form-control mr-sm-2" type="search" placeholder="yyyy-mm-dd" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0 buttonCenter" 
+              type="submit"
+              [disabled]="!searchForm.valid"
+      >Search</button>
+    </form>
+    <div *ngIf="!searchForm.valid && apodRoute" class="alert alert-dark alert-dismissible fade show ml-3" role="alert">
+      <strong>The valid dates range from 1996-01-01 to the present day.</strong>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-  </nav>
+    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+      <li class="nav-item center">
+        <a class="nav-link" routerLink="/rovers/curiosity">Curiosity</a>
+      </li>
+      <li class="nav-item center">
+        <a class="nav-link" routerLink="/rovers/opportunity">Opportunity</a>
+      </li>
+      <li class="nav-item center">
+        <a class="nav-link" routerLink="/rovers/spirit">Spirit</a>
+      </li>
+    </ul>
+  </div>
+</nav>

@@ -5,6 +5,7 @@ import { ServerService } from './server.service';
 @Injectable()
 export class CrossComponentCommunicationService {
   userInputApod = new Subject();
+  currentlyOnApodRouteStatus = new Subject();
   
   constructor(private serverService: ServerService) { }
 
@@ -18,12 +19,27 @@ export class CrossComponentCommunicationService {
     let userInputDate = new Date(userInput);
     let year = userInputDate.getFullYear();
     let month = userInputDate.getMonth()+1;
-    let day = userInputDate.getDate()+1;
+    let day = userInputDate.getDate();
+    if(month === 12 && day === 31){
+      year += 1;
+      month = 1;
+      day = 1;
+    }
+    else if(day < 31){
+      if(day >= 10 && day != 30 && month >= 10){
+        day += 1;
+      }
+      day += 1;
+    }
     let correctDate = new Date(`${year}-${month}-${day}`);
 
     this.serverService.getTenApodJSON(correctDate)
       .subscribe((tenApodArray)=>{
         this.userInputApod.next(tenApodArray);
       });
+  }
+
+  currentlyOnApodRoute(status: boolean){
+    this.currentlyOnApodRouteStatus.next(status);
   }
 }

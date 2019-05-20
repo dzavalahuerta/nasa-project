@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ServerService } from 'src/app/services/server.service';
+import { CrossComponentCommunicationService } from 'src/app/services/cross-component-communication.service';
 
 @Component({
   selector: 'app-curiosity',
@@ -10,7 +11,8 @@ export class CuriosityComponent implements OnInit {
   missionManifest;
   pageOfPhotos = [];
 
-  constructor(private serverService: ServerService) { }
+  constructor(private serverService: ServerService,
+              private cccService: CrossComponentCommunicationService) { }
 
   ngOnInit() {
     window.document.body.style.backgroundImage = "url(https://upload.wikimedia.org/wikipedia/commons/4/4d/Pan_segment1.gif)";
