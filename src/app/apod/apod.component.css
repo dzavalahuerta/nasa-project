@@ -1,4 +1,33 @@
-.position{
-    bottom: 80px;
+button{
+    background-color: #fc3d21;
+    bottom: 20px;
     right: 22px;
+}
+
+button:hover{
+    background-color: #0b3d91
+}
+
+@media (max-width: 991.98px) {
+    div[class=container]{
+        margin-top: 4.4em;
+    }
+}
+
+@media (min-width: 991.98px) {
+    div[class=container]{
+        margin-top: 8.1em;
+    }
+}
+
+@media (min-width: 1010.9px) {
+    div[class=container]{
+        margin-top: 6.6em;
+    }
+}
+
+@media (min-width: 1206px) {
+    div[class=container]{
+        margin-top: 5.2em;
+    }
 }

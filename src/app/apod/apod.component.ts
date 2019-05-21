@@ -12,11 +12,12 @@ import { Subscription } from 'rxjs';
 })
 export class APODComponent implements OnInit, OnDestroy {
   cccServiceSpecificApodSubscription: Subscription;
+  // temporary data
+  apodArray: [] = [];
+  infiniteScrollToggle = false;
   sanitize = (url)=>{
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
-  apodArray: [] = [];
-  infiniteScrollToggle = false;
 
   constructor(private serverService: ServerService,
               private cccService: CrossComponentCommunicationService,

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
 import { Observable } from 'rxjs';
@@ -38,6 +38,8 @@ export class NavbarComponent implements OnInit {
         
         let currentDate = new Date();
         let userInputDate = new Date(control.value);
+
+        // document.querySelector('input[placeholder=yyy-mm-dd]');
         
         if(!regex.test(control.value)){
           resolve({'invalid date': true});
