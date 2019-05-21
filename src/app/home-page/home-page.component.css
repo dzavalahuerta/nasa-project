@@ -1,0 +1,18 @@
+.child-div-1{
+    width: 45%;
+}
+
+.child-div-2{
+    width: 40%; 
+    height: 300px;
+}
+
+@media (max-width: 767.98px) {
+    .container-part-2{
+        flex-direction: column;
+    }
+    .child-div-1,
+    .child-div-2{
+        width: 100%;
+    }
+}
