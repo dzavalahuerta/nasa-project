@@ -10,10 +10,11 @@ nav{
     border: solid red 1.5px
 }
 
+.linkCenter{
+    text-align: center;
+}
+
 @media (max-width: 991px) {
-    .linkCenter{
-        text-align: center;
-    }
     .center{
         margin: 0 auto;
     }

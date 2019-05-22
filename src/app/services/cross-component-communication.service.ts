@@ -5,11 +5,13 @@ import { ServerService } from './server.service';
 @Injectable()
 export class CrossComponentCommunicationService {
   userInputApod = new Subject();
+  userInputApodActivated = new Subject();
   currentlyOnApodRouteStatus = new Subject();
   
   constructor(private serverService: ServerService) { }
 
   getUserInputApod(userInput){
+    this.userInputApodActivated.next();
     // i had to do this to take advantage of the fact
     // that for some reason the RESTAPI subtracts 1 off
     // of the day so instead of changing it, because it 

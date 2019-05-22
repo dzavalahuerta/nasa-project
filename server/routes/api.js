@@ -6,6 +6,7 @@ const API = "https://api.nasa.gov";
 const apiKey = 'gtVd6XMsShimUg52FqajelftZwHWosfHJc3FtCdQ';
 
 router.get('/10apod/:date',asyncHandler(async(req,res)=>{
+    console.log(`start of request`);
     const tenApodJSON = {tenApodArray: []};
     
     let date = req.params.date;
@@ -33,8 +34,7 @@ router.get('/10apod/:date',asyncHandler(async(req,res)=>{
             break;
         }
         else if(calYear === 1995){
-            let error = new Error('There are no more Astronomy Pictures of the Day, you have made it to the end!');
-            return res.json({"error": error.message});
+            break;
         }
         if(calDay <= 10){
             for (let i = 0; i < calDay; i++) {
@@ -87,6 +87,7 @@ router.get('/10apod/:date',asyncHandler(async(req,res)=>{
             }
         }
     }
+    console.log(`end of request`);
     res.status(200).json(tenApodJSON);
 }));
 

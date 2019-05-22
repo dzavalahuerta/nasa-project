@@ -1,4 +1,5 @@
 <div class="container"
+     [ngClass]="{'stop-scrolling': noScroll}"
      infiniteScroll
      [infiniteScrollDistance]="1"
      [infiniteScrollThrottle]="50"
@@ -16,7 +17,7 @@
       <p class="card-text"><small class="text-muted">Astronomy Picture Of The Day: {{apod.date}}</small></p>
     </div>
   </div>
-  <div class="d-flex justify-content-center">
+  <div *ngIf="apodArray[apodArray.length-1].date != '1996-01-01'" class="d-flex justify-content-center" [ngClass]="{'centered-on-screen': noScroll}">
     <div class="spinner-border" role="status">
       <span class="sr-only">Loading...</span>
     </div>
