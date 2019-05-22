@@ -10,6 +10,7 @@ export class HomePageComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    window.document.body.style.background = "white";
   }
 
 }
