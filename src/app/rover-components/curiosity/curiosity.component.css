@@ -1,0 +1,30 @@
+div > h1{
+    z-index: 10;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    text-shadow:black 8px 0 10px;
+    /* color: rgba(236, 236, 236, 0.938); */
+    color: rgba(234, 224, 200, 0.938);
+    font-size: 8em;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.parallax{
+    background: url("https://www.jpl.nasa.gov/images/msl/20160613/pia20602-16.jpg") no-repeat center;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: 0px 35px;
+    height: 100vh;
+}
+
+/* .card-columns {
+    media-breakpoint-only(lg) {
+      column-count: 4;
+    }
+    @include media-breakpoint-only(xl) {
+      column-count: 5;
+    }
+  } */

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ServerService } from '../services/server.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
@@ -9,6 +9,7 @@ import { CrossComponentCommunicationService } from '../services/cross-component-
   styleUrls: ['./apod.component.css']
 })
 export class APODComponent implements OnInit, OnDestroy {
+  @ViewChild('spinner') spinner;
   apodArray: [] = [];
   infiniteScrollToggle = false;
   noScroll = true;
@@ -45,9 +46,15 @@ export class APODComponent implements OnInit, OnDestroy {
 
     this.cccService.userInputApod
     .subscribe((specificApod: [])=>{
-      specificApod.forEach((apod,index)=>{
+      specificApod.forEach((apod: any,index)=>{
         if(apod === ''){
           specificApod.splice(index, 1);
+        }
+        if(apod.date === '1996-01-01'){
+          this.spinner.nativeElement.style.visibility = "hidden";
+        }
+        else{
+          this.spinner.nativeElement.style.visibility = "visible";
         }
       });
       this.apodArray = specificApod;
@@ -88,6 +95,7 @@ export class APODComponent implements OnInit, OnDestroy {
     
     if(dateForNextBatch === '1996-01-01'){
       this.infiniteScrollToggle = false;
+      this.spinner.nativeElement.style.visibility = "hidden";
       return;
     }
 

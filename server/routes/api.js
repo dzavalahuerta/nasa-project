@@ -6,7 +6,6 @@ const API = "https://api.nasa.gov";
 const apiKey = 'gtVd6XMsShimUg52FqajelftZwHWosfHJc3FtCdQ';
 
 router.get('/10apod/:date',asyncHandler(async(req,res)=>{
-    console.log(`start of request`);
     const tenApodJSON = {tenApodArray: []};
     
     let date = req.params.date;
@@ -87,7 +86,6 @@ router.get('/10apod/:date',asyncHandler(async(req,res)=>{
             }
         }
     }
-    console.log(`end of request`);
     res.status(200).json(tenApodJSON);
 }));
 
@@ -97,10 +95,13 @@ router.get('/missionManifest/:roverName',asyncHandler(async(req,res)=>{
     await axios.get(`${API}/mars-photos/api/v1/manifests/${roverName}?api_key=${apiKey}`)
     .then(missionManifest=>{
         res.status(200).json(missionManifest.data.photo_manifest);
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json(err);
     });
 }));
 
-// get the rover name, the sol, and the page
 router.get('/marsPhotos/:roverName/:sol/:pageNum',asyncHandler(async(req,res)=>{
     let roverName = req.params.roverName;
     let sol = req.params.sol;
@@ -109,6 +110,10 @@ router.get('/marsPhotos/:roverName/:sol/:pageNum',asyncHandler(async(req,res)=>{
     await axios.get(`${API}/mars-photos/api/v1/rovers/${roverName}/photos?sol=${sol}&page=${pageNum}&api_key=${apiKey}`)
     .then(photos=>{
         res.status(200).json(photos.data.photos);
+    })
+    .catch(err=>{
+        console.log(err);
+        res.status(500).json(err);
     });
 }));
 
