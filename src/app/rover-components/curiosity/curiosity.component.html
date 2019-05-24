@@ -4,24 +4,34 @@
   </div>
 </div>
 
-<div class="container">
+<div class="container mt-4">
   <p>name: {{missionManifest.name}}</p>
   <p>status: {{missionManifest.status}}</p>
-  <p>landing date: {{missionManifest.landing_date}}</p>
   <p>launch Date: {{missionManifest.launch_date}}</p>
+  <p>landing date: {{missionManifest.landing_date}}</p>
   <p>total photos: {{missionManifest.total_photos}}</p>
   <p>max sol: {{missionManifest.max_sol}}</p>
   <p>max date: {{missionManifest.max_date}}</p>
+  <p>Current Sol: {{currentSol}}</p>
+  <p>Total photos in current sol: {{totalPhotosInCurrentSol}}</p>
 </div>
 
-<div class="container"
+<form class="form-inline w-25 mx-auto mt-2"
+      [formGroup]="solSelectorForm"
+      (ngSubmit)="getSpecificSol()">
+  <div class="form-group mx-sm-3 mb-2">
+    <label for="selectedSol" class="sr-only">Sol selector</label>
+    <input formControlName='selectedSol' type="number" class="form-control" id="selectedSol" placeholder="Please pick a sol">
+  </div>
+  <button type="submit" class="btn btn-primary mb-2" [disabled]="!solSelectorForm.valid">Submit</button>
+</form>
+
+<div class="container mt-2"
      infiniteScroll
      [infiniteScrollDistance]="1"
      [infiniteScrollThrottle]="50"
      [infiniteScrollDisabled]='infiniteScrollToggle'
      (scrolled)="getNextPageOfPhotos()">
-  <p>Current Sol: {{currentSol}}</p>
-  <p>Total photos in current sol: {{totalPhotosInCurrentSol}}</p>
   <div class="card-columns">
     <div *ngFor="let photo of photosOfCurrentSol; let index = index" class="card">
       <img class="card-img" [src]=photo.img_src alt="">
@@ -31,3 +41,9 @@
     </div>
   </div>
 </div>
+
+<button
+  *ngIf="checkPageYOffset()"
+  class="btn text-white position-fixed" 
+  (click)="scrollUp()"
+>Scroll Up</button>

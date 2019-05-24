@@ -1,3 +1,13 @@
+button:nth-child(1){
+  background-color: #0b3d91;
+}
+
+button[class= 'btn text-white position-fixed']{
+  background-color: #fc3d21;
+  bottom: 20px;
+  right: 22px;
+}
+
 div > h1{
     z-index: 10;
     position: relative;
