@@ -7,48 +7,27 @@
 <div class="container">
   <p>name: {{missionManifest.name}}</p>
   <p>status: {{missionManifest.status}}</p>
+  <p>landing date: {{missionManifest.landing_date}}</p>
+  <p>launch Date: {{missionManifest.launch_date}}</p>
+  <p>total photos: {{missionManifest.total_photos}}</p>
+  <p>max sol: {{missionManifest.max_sol}}</p>
+  <p>max date: {{missionManifest.max_date}}</p>
 </div>
 
-<div class="container">
-  <nav aria-label="Navigate through the pages of photos on the current sol">
-    <ul class="pagination">
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-          <span class="sr-only">Previous</span>
-        </a>
-      </li>
-      <!-- <li *ngFor="" class="page-item"><a class="page-link" href="#">{{}}</a></li> -->
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-          <span class="sr-only">Next</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+<div class="container"
+     infiniteScroll
+     [infiniteScrollDistance]="1"
+     [infiniteScrollThrottle]="50"
+     [infiniteScrollDisabled]='infiniteScrollToggle'
+     (scrolled)="getNextPageOfPhotos()">
+  <p>Current Sol: {{currentSol}}</p>
+  <p>Total photos in current sol: {{totalPhotosInCurrentSol}}</p>
   <div class="card-columns">
-    <div *ngFor="let photo of pageOfPhotos" class="card">
+    <div *ngFor="let photo of photosOfCurrentSol; let index = index" class="card">
       <img class="card-img" [src]=photo.img_src alt="">
+      <div class="card-body">
+        <p class="card-text"><small class="text-muted">Picture #{{index + 1}}</small></p>
+      </div>
     </div>
   </div>
-  <nav aria-label="Navigate through the pages of photos on the current sol">
-    <ul class="pagination">
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-          <span class="sr-only">Previous</span>
-        </a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next">
-          <span aria-hidden="true">&raquo;</span>
-          <span class="sr-only">Next</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
 </div>

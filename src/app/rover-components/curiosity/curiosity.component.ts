@@ -7,34 +7,78 @@ import { ServerService } from 'src/app/services/server.service';
   styleUrls: ['./curiosity.component.css']
 })
 export class CuriosityComponent implements OnInit {
+  infiniteScrollToggle = false;
   missionManifest;
-  amountOfPagesForCurrentSol: [] = [];
-  pageOfPhotos = [];
+  currentSol: number;
+  currentPageOfSol: number;
+  totalPhotosInCurrentSol: number;
+
+  photosOfCurrentSol = [];
 
   constructor(private serverService: ServerService) { }
 
   ngOnInit() {
+    // i might not keep this
+    // document.body.style.backgroundColor = 'rgba(234, 224, 200, 0.938)';
+
+    this.currentSol = 2;
+    this.currentPageOfSol = 1;
+
     this.serverService.getMissionManifest('curiosity')
       .subscribe(
-        missionManifest=>{
-          this.missionManifest = missionManifest;
+        async missionManifest=>{
+          this.missionManifest = await missionManifest;
+          let allPhotosFromRover = this.missionManifest.photos;
+          if(this.currentSol > allPhotosFromRover.length/2){
+            for (let i = allPhotosFromRover.length-1; i >= 0; i--) {
+              let element = allPhotosFromRover[i];
+              if(element.sol === this.currentSol){
+                this.totalPhotosInCurrentSol = element.total_photos;
+                break;
+              }
+            }
+          }
+          else{
+            for (let i = 0; i < allPhotosFromRover.length; i++) {
+              let element = allPhotosFromRover[i];
+              if(element.sol === this.currentSol){
+                this.totalPhotosInCurrentSol = element.total_photos;
+                break;
+              }
+            }
+          }   
         }
       );
 
-    this.serverService.getPageOfPhotosOfSol('curiosity', 0, 0)
+    this.serverService.getPageOfPhotosOfSol('curiosity', this.currentSol, this.currentPageOfSol)
       .subscribe(
-        (pageOfPhotos: [])=>{
-          this.pageOfPhotos = pageOfPhotos;
-          this.amountOfPagesForCurrentSol = this.missionManifest.photos;
+        (photos: [])=>{
+          this.photosOfCurrentSol = photos;
         }
       );
   }
 
-  sameSolDifferentPage(){
+  getNextPageOfPhotos(){
+    this.infiniteScrollToggle = true;
 
-  }
-
-  newSolRequest(){
-
+    let maximumPagesOfPhotosForCurrentSol = Math.ceil(this.totalPhotosInCurrentSol/25);
+    
+    if(this.currentPageOfSol === maximumPagesOfPhotosForCurrentSol){
+      return;
+    }
+    else{
+      this.currentPageOfSol += 1;
+      this.serverService.getPageOfPhotosOfSol('curiosity', this.currentSol, this.currentPageOfSol)
+      .subscribe(
+        (nextPageOfPhotos: [])=>{
+          nextPageOfPhotos.forEach((photo, index) => {
+            this.photosOfCurrentSol.push(photo);
+            if(index === nextPageOfPhotos.length-1){
+              this.infiniteScrollToggle = false;
+            }
+          });
+        }
+      );
+    }
   }
 }

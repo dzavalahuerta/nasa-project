@@ -6,7 +6,6 @@ div > h1{
     transform: translate(-50%, -50%);
     text-align: center;
     text-shadow:black 8px 0 10px;
-    /* color: rgba(236, 236, 236, 0.938); */
     color: rgba(234, 224, 200, 0.938);
     font-size: 8em;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -20,6 +19,7 @@ div > h1{
     height: 100vh;
 }
 
+/* eventually use something like this to make the columns of the pics more responsive */
 /* .card-columns {
     media-breakpoint-only(lg) {
       column-count: 4;
