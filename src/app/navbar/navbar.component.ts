@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class NavbarComponent implements OnInit {
   searchForm: FormGroup;
+  loading = false;
   apodRoute = false;
 
   constructor(private cccService: CrossComponentCommunicationService) { }
@@ -28,7 +29,14 @@ export class NavbarComponent implements OnInit {
   }
 
   onSubmitSearchForm(){
+    this.loading = true;
     this.cccService.getUserInputApod(this.searchForm.value.searchFormInput);
+    this.cccService.loadingApods
+      .subscribe(
+        (condition: boolean)=>{
+          this.loading = condition;
+        }
+      );
   }
 
   invalidDate(control: FormControl): Promise<any> | Observable<any>{

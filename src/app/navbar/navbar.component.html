@@ -12,7 +12,14 @@
       <button class="btn btn-outline-light my-2 my-sm-0" 
               type="submit"
               [disabled]="!searchForm.valid"
+              *ngIf="!loading"
       >Search</button>
+      <button class="btn btn-light my-2 my-sm-0" 
+              type="button"
+              disabled
+              *ngIf="loading">
+              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      Loading...</button>
     </form>
     <div *ngIf="!searchForm.valid && apodRoute" class="alert alert-light alert-dismissible fade show" role="alert">
       <strong class="text-dark">The valid dates range from 1996-01-01 to the present day.</strong>

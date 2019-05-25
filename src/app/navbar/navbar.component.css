@@ -1,5 +1,5 @@
 form{
-    max-width: 300px;
+    max-width: 340px;
 }
 
 nav{
@@ -29,6 +29,7 @@ nav{
     button:nth-child(2){
         margin: 0 auto;
     }
+    
     div[role=alert]{
         margin: 0;
     }
@@ -41,6 +42,6 @@ nav{
         max-width: 510px;
     }
     form{
-        min-width: 300px;
+        min-width: 340px;
     }
 }

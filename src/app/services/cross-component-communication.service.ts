@@ -7,6 +7,7 @@ export class CrossComponentCommunicationService {
   userInputApod = new Subject();
   userInputApodActivated = new Subject();
   currentlyOnApodRouteStatus = new Subject();
+  loadingApods = new Subject();
   
   constructor(private serverService: ServerService) { }
 
@@ -44,4 +45,6 @@ export class CrossComponentCommunicationService {
   currentlyOnApodRoute(status: boolean){
     this.currentlyOnApodRouteStatus.next(status);
   }
+
+
 }

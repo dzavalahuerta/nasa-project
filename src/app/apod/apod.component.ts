@@ -45,20 +45,21 @@ export class APODComponent implements OnInit, OnDestroy {
       );
 
     this.cccService.userInputApod
-    .subscribe((specificApod: [])=>{
-      specificApod.forEach((apod: any,index)=>{
-        if(apod === ''){
-          specificApod.splice(index, 1);
-        }
-        if(apod.date === '1996-01-01'){
-          this.spinner.nativeElement.style.visibility = "hidden";
-        }
-        else{
-          this.spinner.nativeElement.style.visibility = "visible";
-        }
+      .subscribe((specificApod: [])=>{
+        specificApod.forEach((apod: any,index)=>{
+          if(apod === ''){
+            specificApod.splice(index, 1);
+          }
+          if(apod.date === '1996-01-01'){
+            this.spinner.nativeElement.style.visibility = "hidden";
+          }
+          else{
+            this.spinner.nativeElement.style.visibility = "visible";
+          }
+        });
+        this.apodArray = specificApod;
+        this.cccService.loadingApods.next(false);
       });
-      this.apodArray = specificApod;
-    });
     
     let currentDate = new Date();
     this.serverService.getTenApodJSON(currentDate)

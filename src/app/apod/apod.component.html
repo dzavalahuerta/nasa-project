@@ -8,7 +8,6 @@
   <div *ngFor='let apod of apodArray' class="card mb-3">
     <img *ngIf="apod.media_type === 'image'" class="card-img-top" [src]='apod.url' alt="image of {{apod.title}}">
     <div *ngIf="apod.media_type === 'video'" class="embed-responsive embed-responsive-16by9">
-      <!-- the link in the src of the iframe is so that the videos can work -->
       <iframe *ngIf="apod.media_type === 'video'" class="embed-responsive-item" [src]='sanitize(apod.url)' scrolling="no" allowfullscreen></iframe>
     </div>
     <div class="card-body">

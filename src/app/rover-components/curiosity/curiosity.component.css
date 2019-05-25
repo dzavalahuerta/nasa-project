@@ -1,5 +1,14 @@
-button:nth-child(1){
+form{
+  min-width: 289px;
+  max-width: 328px;
+}
+
+button[type]{
   background-color: #0b3d91;
+}
+
+button[class= 'btn text-white position-fixed']:hover{
+  background-color: #0b3d91
 }
 
 button[class= 'btn text-white position-fixed']{
@@ -27,6 +36,15 @@ div > h1{
     background-attachment: fixed;
     background-position: 0px 35px;
     height: 100vh;
+}
+
+@media (max-width: 575px) {
+  button[type]{
+    margin-bottom: 1em;
+  }
+  /* button[type="button"]{
+    margin-bottom: 1em;
+  } */
 }
 
 /* eventually use something like this to make the columns of the pics more responsive */

@@ -16,19 +16,29 @@
   <p>Total photos in current sol: {{totalPhotosInCurrentSol}}</p>
 </div>
 
-<form class="form-inline w-25 mx-auto mt-2"
+<form #form class="form-inline mx-auto"
       [formGroup]="solSelectorForm"
       (ngSubmit)="getSpecificSol()">
-  <div class="form-group mx-sm-3 mb-2">
+  <div class="form-group">
     <label for="selectedSol" class="sr-only">Sol selector</label>
     <input formControlName='selectedSol' type="number" class="form-control" id="selectedSol" placeholder="Please pick a sol">
   </div>
-  <button type="submit" class="btn btn-primary mb-2" [disabled]="!solSelectorForm.valid">Submit</button>
+  <button type="submit" 
+          class="btn text-white ml-1" 
+          [disabled]="!solSelectorForm.valid"
+          *ngIf="!loading"
+  >Submit</button>
+  <button class="btn text-white ml-1" 
+          type="button"
+          disabled
+          *ngIf="loading">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  Loading...</button>
 </form>
 
 <div class="container mt-2"
      infiniteScroll
-     [infiniteScrollDistance]="1"
+     [infiniteScrollDistance]="1/12"
      [infiniteScrollThrottle]="50"
      [infiniteScrollDisabled]='infiniteScrollToggle'
      (scrolled)="getNextPageOfPhotos()">

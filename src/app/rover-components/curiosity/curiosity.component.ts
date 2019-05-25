@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ServerService } from 'src/app/services/server.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -9,8 +9,10 @@ import { Observable } from 'rxjs';
   styleUrls: ['./curiosity.component.css']
 })
 export class CuriosityComponent implements OnInit, OnDestroy {
+  @ViewChild('form') form;
   solSelectorForm: FormGroup;
   infiniteScrollToggle = false;
+  loading = false;
   missionManifest;
   currentSol: number;
   currentPageOfSol: number;
@@ -21,10 +23,10 @@ export class CuriosityComponent implements OnInit, OnDestroy {
   constructor(private serverService: ServerService) { }
 
   checkPageYOffset(){
-    if(window.pageYOffset > 1000){
+    if(window.pageYOffset > 2200){
       return true;
     }
-    else if(window.pageYOffset <= 1000){
+    else if(window.pageYOffset <= 2200){
       return false;
     }
   }
@@ -48,31 +50,37 @@ export class CuriosityComponent implements OnInit, OnDestroy {
         }
       );
 
-    this.serverService.getMissionManifest('curiosity')
-      .subscribe(
-        async missionManifest=>{
-          this.missionManifest = await missionManifest;
-          let allPhotosFromRover = this.missionManifest.photos;
-          if(this.currentSol > allPhotosFromRover.length/2){
-            for (let i = allPhotosFromRover.length-1; i >= 0; i--) {
-              let element = allPhotosFromRover[i];
-              if(element.sol === this.currentSol){
-                this.totalPhotosInCurrentSol = element.total_photos;
-                break;
+    let missionManifestCall = ()=>{
+      this.serverService.getMissionManifest('curiosity')
+        .subscribe(
+          async missionManifest=>{
+            this.missionManifest = await missionManifest;
+            let allPhotosFromRover = this.missionManifest.photos;
+            if(this.currentSol > allPhotosFromRover.length/2){
+              for (let i = allPhotosFromRover.length-1; i >= 0; i--) {
+                let element = allPhotosFromRover[i];
+                if(element.sol === this.currentSol){
+                  this.totalPhotosInCurrentSol = element.total_photos;
+                  break;
+                }
               }
             }
+            else{
+              for (let i = 0; i < allPhotosFromRover.length; i++) {
+                let element = allPhotosFromRover[i];
+                if(element.sol === this.currentSol){
+                  this.totalPhotosInCurrentSol = element.total_photos;
+                  break;
+                }
+              }
+            }   
+          },
+          ()=>{
+            missionManifestCall();
           }
-          else{
-            for (let i = 0; i < allPhotosFromRover.length; i++) {
-              let element = allPhotosFromRover[i];
-              if(element.sol === this.currentSol){
-                this.totalPhotosInCurrentSol = element.total_photos;
-                break;
-              }
-            }
-          }   
-        }
-      );
+        );
+    }
+    missionManifestCall();
   }
 
   getNextPageOfPhotos(){
@@ -110,6 +118,7 @@ export class CuriosityComponent implements OnInit, OnDestroy {
   }
 
   getSpecificSol(){
+    this.loading = true;
     this.currentSol = this.solSelectorForm.value.selectedSol;
     this.currentPageOfSol = 1;
 
@@ -143,9 +152,11 @@ export class CuriosityComponent implements OnInit, OnDestroy {
       .subscribe(
         (photos: [])=>{
           if(photos.length === 0){
+            this.loading = false;
             this.photosOfCurrentSol = this.solDoesNotExistCase;
           }
           else{
+            this.loading = false;
             this.photosOfCurrentSol = photos;
           }
         }
@@ -153,10 +164,7 @@ export class CuriosityComponent implements OnInit, OnDestroy {
   }
 
   scrollUp(){
-    window.scroll({
-      top: 700,
-      behavior: 'smooth'
-    });
+    this.form.nativeElement.scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
   }
 
   invalidSol(control: FormControl): Promise<any> | Observable<any>{

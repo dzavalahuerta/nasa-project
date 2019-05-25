@@ -32,13 +32,13 @@ button:hover{
     }
 }
 
-@media (min-width: 1010.9px) {
+@media (min-width: 1050px) {
     div[class=container]{
-        margin-top: 6.6em;
+        margin-top: 6.7em;
     }
 }
 
-@media (min-width: 1206px) {
+@media (min-width: 1246px) {
     div[class=container]{
         margin-top: 5.2em;
     }
