@@ -85,22 +85,18 @@ export class CuriosityComponent implements OnInit, OnDestroy {
 
   getNextPageOfPhotos(){
     this.infiniteScrollToggle = true;
-    console.log(`start`);
 
     let maximumPagesOfPhotosForCurrentSol = Math.ceil(this.totalPhotosInCurrentSol/25);
     
     if(this.currentPageOfSol === maximumPagesOfPhotosForCurrentSol || maximumPagesOfPhotosForCurrentSol === 0){
-      console.log('1 runs');
       this.infiniteScrollToggle = false;
       return;
     }
     else{
-      console.log('2 runs');
       this.currentPageOfSol += 1;
       this.serverService.getPageOfPhotosOfSol('curiosity', this.currentSol, this.currentPageOfSol)
       .subscribe(
         (nextPageOfPhotos: [])=>{
-          console.log(`the sub runs`);
           nextPageOfPhotos.forEach((photo, index) => {
             this.photosOfCurrentSol.push(photo);
             if(index === nextPageOfPhotos.length-1){
@@ -109,7 +105,6 @@ export class CuriosityComponent implements OnInit, OnDestroy {
           });
         },
         ()=>{
-          console.log(`the error runs`);
           this.currentPageOfSol -= 1;
           this.infiniteScrollToggle = false;
         }

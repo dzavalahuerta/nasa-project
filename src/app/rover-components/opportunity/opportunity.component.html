@@ -1,26 +1,59 @@
-<div class="container">
-  <div class="card">
-    <p>this is opportunity bro</p>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, tempore! Animi consequuntur possimus error perspiciatis in, sequi ullam itaque explicabo optio accusantium voluptatem aut debitis iure accusamus. Ullam, sequi officia!</p>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, tempore! Animi consequuntur possimus error perspiciatis in, sequi ullam itaque explicabo optio accusantium voluptatem aut debitis iure accusamus. Ullam, sequi officia!</p>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, tempore! Animi consequuntur possimus error perspiciatis in, sequi ullam itaque explicabo optio accusantium voluptatem aut debitis iure accusamus. Ullam, sequi officia!</p>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, tempore! Animi consequuntur possimus error perspiciatis in, sequi ullam itaque explicabo optio accusantium voluptatem aut debitis iure accusamus. Ullam, sequi officia!</p>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, tempore! Animi consequuntur possimus error perspiciatis in, sequi ullam itaque explicabo optio accusantium voluptatem aut debitis iure accusamus. Ullam, sequi officia!</p>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, tempore! Animi consequuntur possimus error perspiciatis in, sequi ullam itaque explicabo optio accusantium voluptatem aut debitis iure accusamus. Ullam, sequi officia!</p>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, tempore! Animi consequuntur possimus error perspiciatis in, sequi ullam itaque explicabo optio accusantium voluptatem aut debitis iure accusamus. Ullam, sequi officia!</p>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, tempore! Animi consequuntur possimus error perspiciatis in, sequi ullam itaque explicabo optio accusantium voluptatem aut debitis iure accusamus. Ullam, sequi officia!</p>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, tempore! Animi consequuntur possimus error perspiciatis in, sequi ullam itaque explicabo optio accusantium voluptatem aut debitis iure accusamus. Ullam, sequi officia!</p>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, tempore! Animi consequuntur possimus error perspiciatis in, sequi ullam itaque explicabo optio accusantium voluptatem aut debitis iure accusamus. Ullam, sequi officia!</p>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, tempore! Animi consequuntur possimus error perspiciatis in, sequi ullam itaque explicabo optio accusantium voluptatem aut debitis iure accusamus. Ullam, sequi officia!</p>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, tempore! Animi consequuntur possimus error perspiciatis in, sequi ullam itaque explicabo optio accusantium voluptatem aut debitis iure accusamus. Ullam, sequi officia!</p>
-    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Mollitia, tempore! Animi consequuntur possimus error perspiciatis in, sequi ullam itaque explicabo optio accusantium voluptatem aut debitis iure accusamus. Ullam, sequi officia!</p>
-  </div>
-</div>
-  
-<div class="container">
-  <div class="card-columns">
-    <div *ngFor="" class="card">
-      <img class="card-img" src="" alt="">
+<div>
+    <div class="parallax">
+      <h1>Opportunity</h1>
     </div>
   </div>
-</div>
+  
+  <div class="container mt-4">
+    <p>name: {{missionManifest.name}}</p>
+    <p>status: {{missionManifest.status}}</p>
+    <p>launch Date: {{missionManifest.launch_date}}</p>
+    <p>landing date: {{missionManifest.landing_date}}</p>
+    <p>total photos: {{missionManifest.total_photos}}</p>
+    <p>max sol: {{missionManifest.max_sol}}</p>
+    <p>max date: {{missionManifest.max_date}}</p>
+    <p>Current Sol: {{currentSol}}</p>
+    <p>Total photos in current sol: {{totalPhotosInCurrentSol}}</p>
+  </div>
+  
+  <form #form class="form-inline mx-auto"
+        [formGroup]="solSelectorForm"
+        (ngSubmit)="getSpecificSol()">
+    <div class="form-group">
+      <label for="selectedSol" class="sr-only">Sol selector</label>
+      <input formControlName='selectedSol' type="number" class="form-control" id="selectedSol" placeholder="Please pick a sol">
+    </div>
+    <button type="submit" 
+            class="btn text-white ml-1" 
+            [disabled]="!solSelectorForm.valid"
+            *ngIf="!loading"
+    >Submit</button>
+    <button class="btn text-white ml-1" 
+            type="button"
+            disabled
+            *ngIf="loading">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+    Loading...</button>
+  </form>
+  
+  <div class="container mt-2"
+       infiniteScroll
+       [infiniteScrollDistance]="1/12"
+       [infiniteScrollThrottle]="50"
+       [infiniteScrollDisabled]='infiniteScrollToggle'
+       (scrolled)="getNextPageOfPhotos()">
+    <div class="card-columns">
+      <div *ngFor="let photo of photosOfCurrentSol; let index = index" class="card">
+        <img class="card-img" [src]=photo.img_src alt="">
+        <div class="card-body">
+          <p class="card-text"><small class="text-muted">Picture #{{index + 1}}</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <button
+    *ngIf="checkPageYOffset()"
+    class="btn text-white position-fixed" 
+    (click)="scrollUp()"
+  >Scroll Up</button>

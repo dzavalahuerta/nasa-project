@@ -42,17 +42,4 @@ div > h1{
   button[type]{
     margin-bottom: 1em;
   }
-  /* button[type="button"]{
-    margin-bottom: 1em;
-  } */
 }
-
-/* eventually use something like this to make the columns of the pics more responsive */
-/* .card-columns {
-    media-breakpoint-only(lg) {
-      column-count: 4;
-    }
-    @include media-breakpoint-only(xl) {
-      column-count: 5;
-    }
-  } */
