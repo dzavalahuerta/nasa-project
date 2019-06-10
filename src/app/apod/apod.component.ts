@@ -6,7 +6,7 @@ import { CrossComponentCommunicationService } from '../services/cross-component-
 @Component({
   selector: 'app-apod',
   templateUrl: './apod.component.html',
-  styleUrls: ['./apod.component.css']
+  styleUrls: ['./apod.component.sass']
 })
 export class APODComponent implements OnInit, OnDestroy {
   @ViewChild('spinner') spinner;

@@ -1,0 +1,57 @@
+=extra-small-screen
+  @media (max-width: 760px)
+    @content
+  
+=small-screen
+  @media (max-width: 960px)
+    @content
+  
+=medium-screen
+   @media (max-width: 1160px)
+        @content
+  
+.parallax-container
+  h1
+    z-index: 10
+    position: relative
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    text-align: center
+    text-shadow: black 8px 0 10px
+    color: rgba(234, 224, 200, 0.938)
+    font-size: 8em
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+    +extra-small-screen
+      font-size: 6.5em
+
+  .parallax
+    background: url("https://www.jpl.nasa.gov/images/msl/20160613/pia20602-16.jpg") no-repeat center
+    background-size: cover
+    background-attachment: fixed
+    background-position: 0px 35px
+    height: 100vh
+    +medium-screen
+      background-position: -200px 35px
+    +small-screen
+      background-position: -400px 35px
+    +extra-small-screen
+      background-position: -630px 35px
+  
+form
+  min-width: 289px
+  max-width: 328px
+
+button
+  &[type]
+    background-color: #0b3d91
+  &[class='btn text-white position-fixed']
+    &:hover
+      background-color: #0b3d91
+    background-color: #fc3d21
+    bottom: 20px
+    right: 22px
+
+@media (max-width: 575px)
+  button[type]
+    margin-bottom: 1em

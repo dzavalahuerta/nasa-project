@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-curiosity',
   templateUrl: './curiosity.component.html',
-  styleUrls: ['./curiosity.component.css']
+  styleUrls: ['./curiosity.component.sass']
 })
 export class CuriosityComponent implements OnInit, OnDestroy {
   @ViewChild('form') form;

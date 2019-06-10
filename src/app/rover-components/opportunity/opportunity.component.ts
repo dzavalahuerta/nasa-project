@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-opportunity',
   templateUrl: './opportunity.component.html',
-  styleUrls: ['./opportunity.component.css']
+  styleUrls: ['./opportunity.component.sass']
 })
 export class OpportunityComponent implements OnInit, OnDestroy {
   @ViewChild('form') form;

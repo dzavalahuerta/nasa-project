@@ -1,0 +1,53 @@
+=small-screen
+  @media (max-width: 930px)
+    @content
+  
+=medium-screen
+   @media (max-width: 1100px)
+        @content
+  
+.parallax-container
+  h1
+    z-index: 10
+    position: relative
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    text-align: center
+    text-shadow: black 8px 0 10px
+    color: rgba(234, 224, 200, 0.938)
+    font-size: 8em
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+    +medium-screen
+      font-size: 6em
+    +small-screen
+      font-size: 4.5em
+
+  .parallax
+    background: url("https://cdn.teslarati.com/wp-content/uploads/2018/06/nasa-rover-e1528913266643.jpg") no-repeat center
+    background-size: cover
+    background-attachment: fixed
+    background-position: 0px 50px
+    height: 100vh
+    +medium-screen
+      background-position: -175px 50px
+    +small-screen
+      background-position: -375px 50px
+  
+form
+  min-width: 289px
+  max-width: 328px
+
+button
+  &[type]
+    background-color: #0b3d91
+  &[class='btn text-white position-fixed']
+    &:hover
+      background-color: #0b3d91
+    background-color: #fc3d21
+    bottom: 20px
+    right: 22px
+
+@media (max-width: 575px)
+  button[type]
+    margin-bottom: 1em

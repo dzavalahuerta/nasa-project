@@ -6,7 +6,7 @@ import { ServerService } from 'src/app/services/server.service';
 @Component({
   selector: 'app-spirit',
   templateUrl: './spirit.component.html',
-  styleUrls: ['./spirit.component.css']
+  styleUrls: ['./spirit.component.sass']
 })
 export class SpiritComponent implements OnInit, OnDestroy {
   @ViewChild('form') form;
