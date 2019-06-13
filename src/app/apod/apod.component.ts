@@ -82,10 +82,49 @@ export class APODComponent implements OnInit, OnDestroy {
     });
   }
   
+  // getDateForNextBatch(){
+  //   let indexOfLastItem = this.apodArray.length-1;
+  //   let lastItem: {date: string} = this.apodArray[indexOfLastItem];
+  //   let dateForNextBatch = lastItem.date;
+  //   return dateForNextBatch;
+  // }
+
   getDateForNextBatch(){
-    let indexOfLastItem = this.apodArray.length-1;
-    let lastItem: {date: string} = this.apodArray[indexOfLastItem];
-    let dateForNextBatch = lastItem.date;
+    let indexOfLastAPOD = this.apodArray.length-1;
+    let lastAPOD: {date: string} = this.apodArray[indexOfLastAPOD];
+    let lastAPODDate = new Date(lastAPOD.date);
+    let lastAPODYear = lastAPODDate.getFullYear();
+    let lastAPODMonth = lastAPODDate.getMonth()+1;
+    let lastAPODDay = lastAPODDate.getDate();
+    if(lastAPODDay === 1){
+      if(lastAPODMonth > 1){
+        lastAPODMonth -= 1;
+      }
+      else{
+          lastAPODMonth = 12;
+      }
+      if(lastAPODMonth === 2){
+          lastAPODDay = 28;
+      }
+      else if(lastAPODMonth === 4 || lastAPODMonth === 6 || lastAPODMonth === 9 || lastAPODMonth === 11){
+          lastAPODDay = 30;
+      }
+      else{
+          lastAPODDay = 31;
+      }
+      
+      if(lastAPODMonth === 12 && lastAPODDay === 31){
+          lastAPODYear -= 1;
+      }
+    }
+    else{
+      if(lastAPODMonth >= 10 && lastAPODDay >= 11){
+        console.log('it ran');
+        lastAPODDay += 1;
+      }
+        lastAPODDay -= 1;
+    }
+    let dateForNextBatch = `${lastAPODYear}-${lastAPODMonth}-${lastAPODDay}`;
     return dateForNextBatch;
   }
 

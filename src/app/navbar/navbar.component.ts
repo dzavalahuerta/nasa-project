@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit {
   invalidDate(control: FormControl): Promise<any> | Observable<any>{
     const promise = new Promise<any>((resolve, reject)=>{
       setTimeout(() => {
-        let regex = new RegExp(/((199[6-9]|20[0-1][0-9])-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/);
+        let regex = new RegExp(/((199[6-9]|20[0-1][0-9])-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))/);
         
         let currentDate = new Date();
         let userInputDate = new Date(control.value);

@@ -45,6 +45,4 @@ export class CrossComponentCommunicationService {
   currentlyOnApodRoute(status: boolean){
     this.currentlyOnApodRouteStatus.next(status);
   }
-
-
 }

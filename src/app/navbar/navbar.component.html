@@ -8,7 +8,7 @@
           (ngSubmit)="onSubmitSearchForm()" 
           class="form-inline my-2 my-md-0 center"
           *ngIf="apodRoute">
-      <input #searchInput formControlName='searchFormInput' class="form-control mr-sm-2" type="search" placeholder="yyyy-mm-dd" aria-label="Search" [ngClass]="{'invalid-input': !searchForm.valid &&searchForm.touched}">
+      <input #searchInput formControlName='searchFormInput' class="form-control mr-sm-2" type="search" placeholder="yyyy-mm-dd" aria-label="Search" maxlength="10" [ngClass]="{'invalid-input': !searchForm.valid &&searchForm.touched}">
       <button class="btn btn-outline-light my-2 my-sm-0" 
               type="submit"
               [disabled]="!searchForm.valid"

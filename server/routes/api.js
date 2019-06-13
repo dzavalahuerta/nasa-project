@@ -63,7 +63,6 @@ router.get('/10apod/:date',asyncHandler(async(req,res)=>{
                 else{
                     calDay = 31;
                 }
-                
                 if(calMonth === 12 && calDay === 31){
                     calYear -= 1;
                 }
