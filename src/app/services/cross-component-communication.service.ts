@@ -29,9 +29,6 @@ export class CrossComponentCommunicationService {
       day = 1;
     }
     else if(day < 31){
-      if(day >= 10 && day != 30 && month >= 10){
-        day += 1;
-      }
       day += 1;
     }
     let correctDate = new Date(`${year}-${month}-${day}`);

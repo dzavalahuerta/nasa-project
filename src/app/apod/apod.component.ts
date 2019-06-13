@@ -121,8 +121,8 @@ export class APODComponent implements OnInit, OnDestroy {
       if(lastAPODMonth >= 10 && lastAPODDay >= 11){
         console.log('it ran');
         lastAPODDay += 1;
-      }
         lastAPODDay -= 1;
+      }
     }
     let dateForNextBatch = `${lastAPODYear}-${lastAPODMonth}-${lastAPODDay}`;
     return dateForNextBatch;
