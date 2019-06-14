@@ -14,9 +14,6 @@ router.get('/10apod/:date',asyncHandler(async(req,res)=>{
     let calYear = calculatedDate.getFullYear();
     let calMonth = calculatedDate.getMonth()+1;
     let calDay = calculatedDate.getDate();
-    if(calMonth === 12 && calDay === 30){
-        calDay += 1;
-    }
 
     while (tenApodJSON.tenApodArray.length < 10) {
         if(calYear === 1996 && calMonth === 1 && calDay <=10){
