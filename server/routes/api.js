@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const asyncHandler = require('express-async-handler')
+const asyncHandler = require('express-async-handler');
 const axios = require('axios');
 const API = "https://api.nasa.gov";
 const apiKey = 'gtVd6XMsShimUg52FqajelftZwHWosfHJc3FtCdQ';
