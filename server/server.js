@@ -3,8 +3,9 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
+require('dotenv').config();
 
-mongoose.connect("mongodb+srv://dzavalahuerta:Nasa-Project%21%40%23@cluster0-iorgi.mongodb.net/UserAuthentication?retryWrites=true&w=majority" || process.env.MONGOATLAS_URL, {useNewUrlParser: true});
+mongoose.connect(process.env.MONGOATLAS_URL, {useNewUrlParser: true});
 
 const app = express();
 

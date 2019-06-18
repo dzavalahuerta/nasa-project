@@ -10,7 +10,6 @@ module.exports = {
             if(!req.value){
                 req.value = {};
             }
-            console.log(result.value);
             req.value['body'] = result.value;
             next();
         }   
