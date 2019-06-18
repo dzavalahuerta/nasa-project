@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
+    "start": "node server/server.js",
     "build": "ng build",
-    "localBuild": "ng build && nodemon server.js",
+    "localBuild": "ng build && nodemon server/server.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
