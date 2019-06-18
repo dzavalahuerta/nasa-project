@@ -43,6 +43,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+/to-do-list.txt
 
 # System Files
 .DS_Store
