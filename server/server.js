@@ -12,13 +12,13 @@ const app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, "dist/nasa-project")));
+app.use(express.static(path.join(__dirname, "../dist/nasa-project")));
 
 app.use("/api",require("./routes/api"));
 app.use('/users',require('./routes/users'));
 
 app.get('*',(req,res)=>{
-    res.sendFile(path.join(__dirname, "dist/nasa-project/index.html"));
+    res.sendFile(path.join(__dirname, "../dist/nasa-project/index.html"));
 });
 
 const port = process.env.PORT || 3000;
