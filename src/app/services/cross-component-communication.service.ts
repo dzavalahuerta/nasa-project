@@ -4,9 +4,10 @@ import { ServerService } from './server.service';
 
 @Injectable()
 export class CrossComponentCommunicationService {
+  currentlyOnApodRouteStatus = new Subject();
+  currentlyOnHomePageRouteStatus = new Subject();
   userInputApod = new Subject();
   userInputApodActivated = new Subject();
-  currentlyOnApodRouteStatus = new Subject();
   loadingApods = new Subject();
   
   constructor(private serverService: ServerService) { }
@@ -41,5 +42,9 @@ export class CrossComponentCommunicationService {
 
   currentlyOnApodRoute(status: boolean){
     this.currentlyOnApodRouteStatus.next(status);
+  }
+  
+  currentlyOnHomePageRoute(status: boolean){
+    this.currentlyOnHomePageRouteStatus.next(status);
   }
 }

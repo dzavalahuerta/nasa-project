@@ -1,33 +1,62 @@
-nav
-  background-color: #0b3d91
+=small-screen
+  @media (max-width: 576px)
+    @content
 
+=medium-screen
+  @media (max-width: 991px)
+    @content
+
+=big-screen
+  @media (min-width: 991px)
+    @content
+  
+.logged-in-nav
+  background-color: #0b3d91
+  button:nth-child(2)
+    +small-screen
+      margin: 0 auto
+  .center
+    +medium-screen
+      margin: 0 auto
   .linkCenter
     text-align: center
-
-form
-  max-width: 340px
-
-  .invalid-input:focus
-    border: solid red 1.5px
-
-@media (max-width: 991px)
-  .center
-    margin: 0 auto
-  div[role=alert]
-    text-align: center
-    margin: 1em auto 0
-    max-width: 510px
-
-@media (max-width: 576px)
-  button:nth-child(2)
-    margin: 0 auto
-  div[role=alert]
-    margin: 0
-
-@media (min-width: 991px)
-  div[role=alert]
-    text-align: center
-    margin: 0 auto
-    max-width: 510px
   form
-    min-width: 340px
+    max-width: 340px
+    +big-screen
+      min-width: 340px
+    .invalid-input:focus
+      border: solid red 1.5px
+  div[role=alert]
+    +small-screen
+      margin: 0
+    +medium-screen
+      text-align: center
+      margin: 1em auto 0
+      max-width: 510px
+    +big-screen
+      text-align: center
+      margin: 0 auto
+      max-width: 510px
+
+.home-page-nav
+  background-color: #0b3d91
+  .center
+    +medium-screen
+      margin: 0 auto
+  .linkCenter
+    text-align: center
+  form
+    +big-screen
+      margin-left: auto
+    +medium-screen
+      max-width: 500px
+      flex-direction: column
+    input
+      +medium-screen
+        width: 80%
+      &:nth-of-type(2)
+        +small-screen
+          margin: 1em 0 0 0
+        +medium-screen
+          margin: 1em 0
+    button

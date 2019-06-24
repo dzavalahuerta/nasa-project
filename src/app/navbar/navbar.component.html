@@ -1,14 +1,14 @@
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+<nav *ngIf="!homePageRoute" class="navbar navbar-expand-lg navbar-dark fixed-top logged-in-nav">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="collapse navbar-collapse center" id="navbarTogglerDemo01">
-  <div class="linkCenter"><a class="navbar-brand d-inline-block center" routerLink="/">Home</a></div>
+  <div class="collapse navbar-collapse center" id="navbarTogglerDemo02">
+    <div class="linkCenter"><a class="navbar-brand d-inline-block center" routerLink="/">Home</a></div>
     <form [formGroup]='searchForm'
           (ngSubmit)="onSubmitSearchForm()" 
           class="form-inline my-2 my-md-0 center"
           *ngIf="apodRoute">
-      <input #searchInput formControlName='searchFormInput' class="form-control mr-sm-2" type="search" placeholder="yyyy-mm-dd" aria-label="Search" maxlength="10" [ngClass]="{'invalid-input': !searchForm.valid &&searchForm.touched}">
+      <input #searchInput formControlName='searchFormInput' class="form-control mr-sm-2" type="search" placeholder="yyyy-mm-dd" aria-label="Search" maxlength="10" [ngClass]="{'invalid-input': !searchForm.valid && searchForm.touched}">
       <button class="btn btn-outline-light my-2 my-sm-0" 
               type="submit"
               [disabled]="!searchForm.valid"
@@ -41,5 +41,23 @@
         <a class="nav-link text-white" routerLink="/rovers/spirit">Spirit</a>
       </li>
     </ul>
+  </div>
+</nav>
+
+<nav *ngIf="homePageRoute" class="navbar navbar-expand-lg navbar-dark fixed-top home-page-nav">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse center" id="navbarTogglerDemo02">
+    <div class="linkCenter"><a class="navbar-brand d-inline-block center" routerLink="/">NASA Project</a></div>
+    <form [formGroup]='logInForm'
+          (ngSubmit)="onSubmitLogInForm()" 
+          class="form-inline my-2 my-md-0 center d-flex">
+      <input formControlName='email' class="form-control mr-sm-2 p-2" type="email" placeholder="email" aria-label="email">
+      <input formControlName='password' class="form-control mr-sm-2 p-2" type="password" placeholder="password" aria-label="password">
+      <button class="btn btn-outline-light my-2 my-sm-0 p-2" 
+              type="submit">
+      Log In</button>
+    </form>
   </div>
 </nav>

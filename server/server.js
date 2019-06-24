@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
-require('dotenv').config();
+require('dotenv').config('../server');
 
 mongoose.connect(process.env.MONGOATLAS_URL, {useNewUrlParser: true});
 

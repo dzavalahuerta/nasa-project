@@ -10,22 +10,36 @@ import { Observable } from 'rxjs';
 })
 export class NavbarComponent implements OnInit {
   searchForm: FormGroup;
+  logInForm: FormGroup;
   loading = false;
   apodRoute = false;
+  homePageRoute = false;
 
   constructor(private cccService: CrossComponentCommunicationService) { }
 
   ngOnInit() {
-    this.searchForm = new FormGroup({
-      'searchFormInput': new FormControl(null, [Validators.required], this.invalidDate)
-    });
-
     this.cccService.currentlyOnApodRouteStatus
       .subscribe(
         (status: boolean)=>{
           this.apodRoute = status;
         }
       );
+
+    this.cccService.currentlyOnHomePageRouteStatus
+      .subscribe(
+        (status: boolean)=>{
+          this.homePageRoute = status;
+        }
+      );
+
+    this.searchForm = new FormGroup({
+      'searchFormInput': new FormControl(null, [Validators.required], this.invalidDate)
+    });
+
+    this.logInForm = new FormGroup({
+      'email': new FormControl(null),
+      'password': new FormControl(null)
+    });
   }
 
   onSubmitSearchForm(){

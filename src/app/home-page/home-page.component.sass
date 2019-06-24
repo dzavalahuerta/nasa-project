@@ -1,20 +1,42 @@
-img
-  height: 50px
-  width: 50px
+=medium
+  @media (max-width: 991px)
+    @content
 
-p
-  margin-top: 2em
+.invalid
+  border: solid red 1px !important
 
-@media (max-width: 991px)
-  div[class="container d-flex justify-content-around"]
+.container
+  +medium
     flex-direction: column
+  
   .left-div
-    margin-top: 5em
-  .right-div
-    margin-top: 3em
-
-@media (min-width: 991px)
-  .left-div
+    width: 45%
     margin-top: 8em
+    +medium
+      margin-top: 5em
+      width: 100%
+    img
+      height: 50px
+      width: 50px
+    p
+      margin-top: 2em
+
   .right-div
+    width: 45%
     margin-top: 5em
+    +medium
+      margin-top: 3em
+      width: 100%
+    p
+      font-size: 19px
+    form
+      input
+        width: 80%
+        border-radius: 6px
+        border: solid rgb(200,200,200) 1px
+        outline: none
+      .password-input
+        margin-top: 1em
+      button
+        margin-top: 1em
+        width: 200px
