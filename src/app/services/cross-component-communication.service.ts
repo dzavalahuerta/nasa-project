@@ -11,6 +11,10 @@ export class CrossComponentCommunicationService {
   userInputApodActivated = new Subject();
   loadingApods = new Subject();
   
+  // isAuthenticated = new Subject();
+  // jwt = new Subject();
+  // backEndErrorMessage = new Subject();
+
   constructor(private serverService: ServerService) { }
 
   getUserInputApod(userInput){

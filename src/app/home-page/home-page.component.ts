@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
+import { ServerService } from '../services/server.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -10,7 +12,10 @@ import { CrossComponentCommunicationService } from '../services/cross-component-
 export class HomePageComponent implements OnInit, OnDestroy {
   signUpForm: FormGroup;
 
-  constructor(private cccService: CrossComponentCommunicationService) { }
+  constructor(private cccService: CrossComponentCommunicationService,
+              private serverService: ServerService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
     window.document.body.style.background = "white";
@@ -24,6 +29,23 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   onSubmitSignUpForm(){
+    this.serverService.registerNewUser(this.signUpForm.value).subscribe(
+      (res: {token: string})=>{
+        localStorage.setItem('JWT_TOKEN', res.token);
+        this.router.navigate(['/apod'], { relativeTo: this.route });
+      },
+      error=>{
+        // eventually make it so the user is displayed an error message
+        console.error(error.message);
+      }
+    );
+  }
+
+  onGoogleOAuth(){
+
+  }
+
+  onFacebookOAuth(){
 
   }
 

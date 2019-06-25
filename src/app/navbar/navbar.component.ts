@@ -45,8 +45,8 @@ export class NavbarComponent implements OnInit {
     });
 
     this.logInForm = new FormGroup({
-      'email': new FormControl(null),
-      'password': new FormControl(null)
+      'email': new FormControl(null, Validators.required),
+      'password': new FormControl(null, Validators.required)
     });
   }
 
