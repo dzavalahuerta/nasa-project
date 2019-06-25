@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { ServerService } from 'src/app/services/server.service';
+import { NasaApiService } from 'src/app/services/nasa-api.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -20,7 +20,7 @@ export class OpportunityComponent implements OnInit, OnDestroy {
   photosOfCurrentSol = [];
   solDoesNotExistCase = [{"img_src": "https://i.stack.imgur.com/m6Gv4.png"}];
 
-  constructor(private serverService: ServerService) { }
+  constructor(private nasaApiService: NasaApiService) { }
 
   checkPageYOffset(){
     if(window.pageYOffset > 2200){
@@ -43,7 +43,7 @@ export class OpportunityComponent implements OnInit, OnDestroy {
     this.currentSol = 1;
     this.currentPageOfSol = 1;
     
-    this.serverService.getPageOfPhotosOfSol('opportunity', this.currentSol, this.currentPageOfSol)
+    this.nasaApiService.getPageOfPhotosOfSol('opportunity', this.currentSol, this.currentPageOfSol)
       .subscribe(
         (photos: [])=>{
           this.photosOfCurrentSol = photos;
@@ -51,7 +51,7 @@ export class OpportunityComponent implements OnInit, OnDestroy {
       );
 
     let missionManifestCall = ()=>{
-      this.serverService.getMissionManifest('opportunity')
+      this.nasaApiService.getMissionManifest('opportunity')
         .subscribe(
           async missionManifest=>{
             this.missionManifest = await missionManifest;
@@ -94,7 +94,7 @@ export class OpportunityComponent implements OnInit, OnDestroy {
     }
     else{
       this.currentPageOfSol += 1;
-      this.serverService.getPageOfPhotosOfSol('opportunity', this.currentSol, this.currentPageOfSol)
+      this.nasaApiService.getPageOfPhotosOfSol('opportunity', this.currentSol, this.currentPageOfSol)
       .subscribe(
         (nextPageOfPhotos: [])=>{
           nextPageOfPhotos.forEach((photo, index) => {
@@ -143,7 +143,7 @@ export class OpportunityComponent implements OnInit, OnDestroy {
         }
       }
 
-    this.serverService.getPageOfPhotosOfSol('opportunity', this.currentSol, this.currentPageOfSol)
+    this.nasaApiService.getPageOfPhotosOfSol('opportunity', this.currentSol, this.currentPageOfSol)
       .subscribe(
         (photos: [])=>{
           if(photos.length === 0){

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ServerService } from '../services/server.service';
+import { NasaApiService } from '../services/nasa-api.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
 
@@ -17,7 +17,7 @@ export class APODComponent implements OnInit, OnDestroy {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
-  constructor(private serverService: ServerService,
+  constructor(private nasaApiService: NasaApiService,
               private cccService: CrossComponentCommunicationService,
               public sanitizer: DomSanitizer) { }
 
@@ -62,7 +62,7 @@ export class APODComponent implements OnInit, OnDestroy {
       });
     
     let currentDate = new Date();
-    this.serverService.getTenApodJSON(currentDate)
+    this.nasaApiService.getTenApodJSON(currentDate)
     .subscribe((tenApodArray)=>{
       tenApodArray.forEach((apod, index) => {
         if(apod != ''){
@@ -81,13 +81,6 @@ export class APODComponent implements OnInit, OnDestroy {
       behavior: 'smooth'
     });
   }
-  
-  // getDateForNextBatch(){
-  //   let indexOfLastItem = this.apodArray.length-1;
-  //   let lastItem: {date: string} = this.apodArray[indexOfLastItem];
-  //   let dateForNextBatch = lastItem.date;
-  //   return dateForNextBatch;
-  // }
 
   getDateForNextBatch(){
     let indexOfLastAPOD = this.apodArray.length-1;
@@ -136,7 +129,7 @@ export class APODComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.serverService.getTenApodJSON(dateForNextBatch)
+    this.nasaApiService.getTenApodJSON(dateForNextBatch)
       .subscribe((tenApodArray)=>{
         tenApodArray.forEach((apod, index) => {
           if(apod != ''){

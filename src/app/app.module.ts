@@ -4,18 +4,20 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { APODComponent } from './apod/apod.component';
-import { ServerService } from './services/server.service';
-import { CrossComponentCommunicationService } from './services/cross-component-communication.service';
 import { HomePageComponent } from './home-page/home-page.component';
 import { SpiritComponent } from './rover-components/spirit/spirit.component';
 import { CuriosityComponent } from './rover-components/curiosity/curiosity.component';
 import { OpportunityComponent } from './rover-components/opportunity/opportunity.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+
+import { NasaApiService } from './services/nasa-api.service';
+import { CrossComponentCommunicationService } from './services/cross-component-communication.service';
+import { UserAuthenticationService } from './services/userAuthentication.service';
+
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 const Routes = [
   { path: '', component: HomePageComponent},
@@ -46,7 +48,7 @@ const Routes = [
     InfiniteScrollModule,
     ReactiveFormsModule
   ],
-  providers: [ServerService, CrossComponentCommunicationService],
+  providers: [NasaApiService, CrossComponentCommunicationService, UserAuthenticationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "../dist/nasa-project")));
 
-app.use("/api",require("./routes/api"));
+app.use("/api",require("./routes/nasaApi"));
 app.use('/users',require('./routes/users'));
 
 app.get('*',(req,res)=>{

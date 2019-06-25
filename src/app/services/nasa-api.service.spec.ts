@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ServerService } from './server.service';
+import { NasaApiService } from './nasa-api.service';
 
 describe('ApodServiceService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: ServerService = TestBed.get(ServerService);
+    const service: NasaApiService = TestBed.get(NasaApiService);
     expect(service).toBeTruthy();
   });
 });

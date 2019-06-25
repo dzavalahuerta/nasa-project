@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 @Injectable()
-export class ServerService {
+export class NasaApiService {
 
   constructor(private http: HttpClient) { }
 

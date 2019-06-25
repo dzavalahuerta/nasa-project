@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
-import { ServerService } from '../services/server.service';
+import { NasaApiService } from '../services/nasa-api.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -13,7 +13,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   signUpForm: FormGroup;
 
   constructor(private cccService: CrossComponentCommunicationService,
-              private serverService: ServerService,
+              private nasaApiService: NasaApiService,
               private router: Router,
               private route: ActivatedRoute) { }
 
@@ -29,7 +29,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   onSubmitSignUpForm(){
-    this.serverService.registerNewUser(this.signUpForm.value).subscribe(
+    this.nasaApiService.registerNewUser(this.signUpForm.value).subscribe(
       (res: {token: string})=>{
         localStorage.setItem('JWT_TOKEN', res.token);
         this.router.navigate(['/apod'], { relativeTo: this.route });

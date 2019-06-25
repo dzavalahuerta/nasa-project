@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { ServerService } from 'src/app/services/server.service';
+import { NasaApiService } from 'src/app/services/nasa-api.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -20,7 +20,7 @@ export class CuriosityComponent implements OnInit, OnDestroy {
   photosOfCurrentSol = [];
   solDoesNotExistCase = [{"img_src": "https://i.stack.imgur.com/m6Gv4.png"}];
 
-  constructor(private serverService: ServerService) { }
+  constructor(private nasaApiService: NasaApiService) { }
 
   checkPageYOffset(){
     if(window.pageYOffset > 2200){
@@ -43,7 +43,7 @@ export class CuriosityComponent implements OnInit, OnDestroy {
     this.currentSol = 1;
     this.currentPageOfSol = 1;
     
-    this.serverService.getPageOfPhotosOfSol('curiosity', this.currentSol, this.currentPageOfSol)
+    this.nasaApiService.getPageOfPhotosOfSol('curiosity', this.currentSol, this.currentPageOfSol)
       .subscribe(
         (photos: [])=>{
           this.photosOfCurrentSol = photos;
@@ -51,7 +51,7 @@ export class CuriosityComponent implements OnInit, OnDestroy {
       );
 
     let missionManifestCall = ()=>{
-      this.serverService.getMissionManifest('curiosity')
+      this.nasaApiService.getMissionManifest('curiosity')
         .subscribe(
           async missionManifest=>{
             this.missionManifest = await missionManifest;

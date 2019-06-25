@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { ServerService } from './server.service';
+import { NasaApiService } from './nasa-api.service';
 
 @Injectable()
 export class CrossComponentCommunicationService {
@@ -10,12 +10,8 @@ export class CrossComponentCommunicationService {
   userInputApod = new Subject();
   userInputApodActivated = new Subject();
   loadingApods = new Subject();
-  
-  // isAuthenticated = new Subject();
-  // jwt = new Subject();
-  // backEndErrorMessage = new Subject();
 
-  constructor(private serverService: ServerService) { }
+  constructor(private nasaApiService: NasaApiService) { }
 
   getUserInputApod(userInput){
     this.userInputApodActivated.next();
@@ -39,7 +35,7 @@ export class CrossComponentCommunicationService {
     }
     let correctDate = new Date(`${year}-${month}-${day}`);
 
-    this.serverService.getTenApodJSON(correctDate)
+    this.nasaApiService.getTenApodJSON(correctDate)
       .subscribe((tenApodArray)=>{
         this.userInputApod.next(tenApodArray);
       });
