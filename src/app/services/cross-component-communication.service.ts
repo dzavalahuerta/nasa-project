@@ -6,6 +6,7 @@ import { ServerService } from './server.service';
 export class CrossComponentCommunicationService {
   currentlyOnApodRouteStatus = new Subject();
   currentlyOnHomePageRouteStatus = new Subject();
+  currentlyOnPageNotFoundRouteStatus = new Subject();
   userInputApod = new Subject();
   userInputApodActivated = new Subject();
   loadingApods = new Subject();
@@ -46,5 +47,9 @@ export class CrossComponentCommunicationService {
   
   currentlyOnHomePageRoute(status: boolean){
     this.currentlyOnHomePageRouteStatus.next(status);
+  }
+
+  currentlyOnPageNotFoundRoute(status: boolean){
+    this.currentlyOnPageNotFoundRouteStatus.next(status);
   }
 }

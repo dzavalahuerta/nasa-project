@@ -44,7 +44,7 @@
   </div>
 </nav>
 
-<nav *ngIf="homePageRoute" class="navbar navbar-expand-lg navbar-dark fixed-top home-page-nav">
+<nav *ngIf="homePageRoute || pageNotFoundRoute" class="navbar navbar-expand-lg navbar-dark fixed-top home-page-nav">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -52,7 +52,8 @@
     <div class="linkCenter"><a class="navbar-brand d-inline-block center" routerLink="/">NASA Project</a></div>
     <form [formGroup]='logInForm'
           (ngSubmit)="onSubmitLogInForm()" 
-          class="form-inline my-2 my-md-0 center d-flex">
+          class="form-inline my-2 my-md-0 center d-flex"
+          *ngIf="!pageNotFoundRoute">
       <input formControlName='email' class="form-control mr-sm-2 p-2" type="email" placeholder="email" aria-label="email">
       <input formControlName='password' class="form-control mr-sm-2 p-2" type="password" placeholder="password" aria-label="password">
       <button class="btn btn-outline-light my-2 my-sm-0 p-2" 

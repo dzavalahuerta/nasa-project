@@ -14,6 +14,7 @@ export class NavbarComponent implements OnInit {
   loading = false;
   apodRoute = false;
   homePageRoute = false;
+  pageNotFoundRoute = false;
 
   constructor(private cccService: CrossComponentCommunicationService) { }
 
@@ -31,6 +32,13 @@ export class NavbarComponent implements OnInit {
           this.homePageRoute = status;
         }
       );
+
+    this.cccService.currentlyOnPageNotFoundRouteStatus
+        .subscribe(
+          (status: boolean)=>{
+            this.pageNotFoundRoute = status;
+          }
+        );
 
     this.searchForm = new FormGroup({
       'searchFormInput': new FormControl(null, [Validators.required], this.invalidDate)

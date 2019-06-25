@@ -31,9 +31,9 @@
       <span *ngIf="!signUpForm.controls.email.valid && signUpForm.controls.email.touched">
         Please enter a valid email address.
       </span>
-      <span *ngIf="THISISGOINGTOREACTTOANERRORFROMMONGO">
+      <!-- <span *ngIf="THISISGOINGTOREACTTOANERRORFROMMONGO">
         This email address is already in use.
-      </span>
+      </span> -->
       <input type="password"
              formControlName="password"
              placeholder="password"

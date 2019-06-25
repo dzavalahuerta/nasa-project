@@ -15,6 +15,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { SpiritComponent } from './rover-components/spirit/spirit.component';
 import { CuriosityComponent } from './rover-components/curiosity/curiosity.component';
 import { OpportunityComponent } from './rover-components/opportunity/opportunity.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const Routes = [
   { path: '', component: HomePageComponent},
@@ -23,7 +24,8 @@ const Routes = [
     { path: 'curiosity', component: CuriosityComponent },
     { path: 'opportunity', component: OpportunityComponent },
     { path: 'spirit', component: SpiritComponent }
-  ]}
+  ]},
+  { path: '**', component: PageNotFoundComponent}
 ]
 
 @NgModule({
@@ -34,7 +36,8 @@ const Routes = [
     HomePageComponent,
     SpiritComponent,
     CuriosityComponent,
-    OpportunityComponent
+    OpportunityComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
