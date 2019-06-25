@@ -3,7 +3,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse center" id="navbarTogglerDemo02">
-    <div class="linkCenter"><a class="navbar-brand d-inline-block center" routerLink="/">Home</a></div>
+    <div class="linkCenter"><a class="navbar-brand d-inline-block center" routerLink="/apod">APOD</a></div>
     <form [formGroup]='searchForm'
           (ngSubmit)="onSubmitSearchForm()" 
           class="form-inline my-2 my-md-0 center"
@@ -29,9 +29,6 @@
     </div>
     <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
       <li class="nav-item center">
-        <a class="nav-link text-white" routerLink="/apod">APOD</a>
-      </li>
-      <li class="nav-item center">
         <a class="nav-link text-white" routerLink="/rovers/curiosity">Curiosity</a>
       </li>
       <li class="nav-item center">
@@ -39,6 +36,9 @@
       </li>
       <li class="nav-item center">
         <a class="nav-link text-white" routerLink="/rovers/spirit">Spirit</a>
+      </li>
+      <li class="nav-item center">
+        <a class="nav-link text-white" routerLink="/">Log Out</a>
       </li>
     </ul>
   </div>

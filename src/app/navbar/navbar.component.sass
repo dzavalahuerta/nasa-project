@@ -35,8 +35,16 @@
       max-width: 510px
     +big-screen
       text-align: center
-      margin: 0 auto
+      margin: 0 -7.5em 0 0
+      min-width: 350px
       max-width: 510px
+  ul
+    li
+      white-space: nowrap
+      &:last-child
+        margin-left: 2em
+        +medium-screen
+          margin: 2em auto 0
 
 .home-page-nav
   background-color: #0b3d91
@@ -62,4 +70,3 @@
           margin: 1em 0 0 0
         +medium-screen
           margin: 1em 0
-    button
