@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NasaApiService } from '../services/nasa-api.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-apod',
@@ -131,19 +130,21 @@ export class APODComponent implements OnInit, OnDestroy {
     }
 
     this.nasaApiService.getTenApodJSON(dateForNextBatch)
-      .subscribe((tenApodArray)=>{
-        tenApodArray.forEach((apod, index) => {
-          if(apod != ''){
-            this.apodArray.push(apod);
-          }
-          if(index === tenApodArray.length-1){
+      .subscribe(
+        (tenApodArray)=>{
+          tenApodArray.forEach((apod, index) => {
+            if(apod != ''){
+              this.apodArray.push(apod);
+            }
+            if(index === tenApodArray.length-1){
+              this.infiniteScrollToggle = false;
+            }
+          });
+          if(tenApodArray.length === 0){
             this.infiniteScrollToggle = false;
           }
-        });
-        if(tenApodArray.length === 0){
-          this.infiniteScrollToggle = false;
         }
-      });
+      );
   }
 
   ngOnDestroy(){

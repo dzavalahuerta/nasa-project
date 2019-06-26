@@ -18,14 +18,13 @@ router.get('/10apod/:date',asyncHandler(async(req,res)=>{
     while (tenApodJSON.tenApodArray.length < 10) {
         if(calYear === 1996 && calMonth === 1 && calDay <=10){
             for (let i = 0; i < calDay; i++) {
-                await axios.get(`${API}/planetary/apod?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`)
-                .then(apod=>{
-                    tenApodJSON.tenApodArray.push(apod.data);
-                })
-                .catch((err)=>{
-                    console.log(err);
+                try {
+                    let apod = await axios.get(`${API}/planetary/apod?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`);
+
+                    tenApodJSON.tenApodArray.push(apod.data);                   
+                } catch (error) {
                     tenApodJSON.tenApodArray.push('');
-                });
+                }
             }
             break;
         }
@@ -34,14 +33,13 @@ router.get('/10apod/:date',asyncHandler(async(req,res)=>{
         }
         if(calDay <= 10){
             for (let i = 0; i < calDay; i++) {
-                await axios.get(`${API}/planetary/apod?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`)
-                .then(apod=>{
+                try {
+                    let apod = await axios.get(`${API}/planetary/apod?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`);
+
                     tenApodJSON.tenApodArray.push(apod.data);
-                })
-                .catch((err)=>{
-                    console.log(err);
+                } catch (error) {
                     tenApodJSON.tenApodArray.push('');
-                });
+                }
             }
             if(tenApodJSON.tenApodArray.length < 10){
                 if(calMonth > 1){
@@ -71,14 +69,13 @@ router.get('/10apod/:date',asyncHandler(async(req,res)=>{
                     break;
                 }
                 
-                await axios.get(`${API}/planetary/apod?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`)
-                .then(apod=>{
-                    tenApodJSON.tenApodArray.push(apod.data);
-                })
-                .catch((err)=>{
-                    console.log(err);
-                    tenApodJSON.tenApodArray.push('');
-                });
+                try {
+                    let apod = await axios.get(`${API}/planetary/apod?date=${calYear}-${calMonth}-${calDay-i}&api_key=${apiKey}`);
+
+                    tenApodJSON.tenApodArray.push(apod.data);                   
+                } catch (error) {
+                    tenApodJSON.tenApodArray.push('');   
+                }
             }
         }
     }
