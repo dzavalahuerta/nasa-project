@@ -38,7 +38,7 @@
         <a class="nav-link text-white" routerLink="/rovers/spirit">Spirit</a>
       </li>
       <li class="nav-item center">
-        <a class="nav-link text-white" routerLink="/">Log Out</a>
+        <a class="nav-link text-white" (click)="onLogOut()">Log Out</a>
       </li>
     </ul>
   </div>
@@ -54,12 +54,27 @@
           (ngSubmit)="onSubmitLogInForm()" 
           class="form-inline my-2 my-md-0 center d-flex"
           *ngIf="!pageNotFoundRoute">
-      <input formControlName='email' class="form-control mr-sm-2 p-2" type="email" placeholder="email" aria-label="email">
-      <input formControlName='password' class="form-control mr-sm-2 p-2" type="password" placeholder="password" aria-label="password">
+      <input formControlName='email' 
+              class="form-control mr-sm-2 p-2" 
+              type="email" 
+              placeholder="email" 
+              aria-label="email"
+              [ngClass]="{'invalid-input': invalidUserCredentials}">
+      <input formControlName='password' 
+              class="form-control mr-sm-2 p-2" 
+              type="password" placeholder="password" 
+              aria-label="password"
+              [ngClass]="{'invalid-input': invalidUserCredentials}">
       <button class="btn btn-outline-light my-2 my-sm-0 p-2" 
               type="submit"
               [disabled]="!logInForm.valid">
       Log In</button>
     </form>
+    <div *ngIf="invalidUserCredentials" class="alert alert-danger alert-dismissible fade show" role="alert">
+      Incorrect Email or Password.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
   </div>
 </nav>

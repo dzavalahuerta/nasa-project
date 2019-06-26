@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
 import { Observable } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from 'angularx-social-login';
+import { UserAuthenticationService } from '../services/userAuthentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,8 +18,15 @@ export class NavbarComponent implements OnInit {
   apodRoute = false;
   homePageRoute = false;
   pageNotFoundRoute = false;
+  localUserIsAuthenticated = false;
+  invalidUserCredentials = false;
+  
 
-  constructor(private cccService: CrossComponentCommunicationService) { }
+  constructor(private cccService: CrossComponentCommunicationService,
+              private authService: AuthService,
+              private userAuthService: UserAuthenticationService,
+              private router: Router,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.cccService.currentlyOnApodRouteStatus
@@ -34,11 +44,18 @@ export class NavbarComponent implements OnInit {
       );
 
     this.cccService.currentlyOnPageNotFoundRouteStatus
-        .subscribe(
+      .subscribe(
           (status: boolean)=>{
             this.pageNotFoundRoute = status;
           }
         );
+
+    this.userAuthService.localStrategyUserisAuthenticated
+      .subscribe(
+        (status: boolean)=>{
+          this.localUserIsAuthenticated = status;
+        }
+      );
 
     this.searchForm = new FormGroup({
       'searchFormInput': new FormControl(null, [Validators.required], this.invalidDate)
@@ -59,6 +76,36 @@ export class NavbarComponent implements OnInit {
           this.loading = condition;
         }
       );
+  }
+
+  onSubmitLogInForm(){
+    this.userAuthService.logInLocalStrategy(this.logInForm.value).subscribe(
+      (res: {token: string})=>{
+        this.invalidUserCredentials = false;
+        this.userAuthService.localStrategyUserisAuthenticated.next(true);
+        localStorage.setItem('JWT_TOKEN', res.token);
+        this.logInForm.reset();
+        this.router.navigate(['/apod'], { relativeTo: this.route });
+      },
+      ()=>{
+        this.invalidUserCredentials = true;
+      }
+    );
+  }
+
+  onLogOut(){
+    this.authService.signOut()
+      try{
+        localStorage.removeItem('JWT_TOKEN');
+        this.router.navigate(['/']);
+        return;
+      }
+      catch(error){
+        this.userAuthService.localStrategyUserisAuthenticated.next(false);
+        localStorage.removeItem('JWT_TOKEN');
+        this.router.navigate(['/']);
+      }
+    
   }
 
   invalidDate(control: FormControl): Promise<any> | Observable<any>{

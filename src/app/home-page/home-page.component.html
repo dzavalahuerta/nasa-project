@@ -27,13 +27,13 @@
              placeholder="email"
              class="p-2"
              [ngClass]="{'invalid': !signUpForm.controls.email.valid
-                          && signUpForm.controls.email.touched}">
-      <span *ngIf="!signUpForm.controls.email.valid && signUpForm.controls.email.touched">
+                          && signUpForm.controls.email.touched || invalidEmail || emailInUse}">
+      <span *ngIf="!signUpForm.controls.email.valid && signUpForm.controls.email.touched || invalidEmail">
         Please enter a valid email address.
       </span>
-      <!-- <span *ngIf="THISISGOINGTOREACTTOANERRORFROMMONGO">
-        This email address is already in use.
-      </span> -->
+      <span *ngIf="emailInUse">
+        Email address is already in use.
+      </span>
       <input type="password"
              formControlName="password"
              placeholder="password"

@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
-import { NasaApiService } from '../services/nasa-api.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { UserAuthenticationService } from '../services/userAuthentication.service';
+import { AuthService } from "angularx-social-login";
+import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-login";
 
 @Component({
   selector: 'app-home-page',
@@ -11,9 +13,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class HomePageComponent implements OnInit, OnDestroy {
   signUpForm: FormGroup;
+  invalidEmail = false;
+  emailInUse = false;
 
   constructor(private cccService: CrossComponentCommunicationService,
-              private nasaApiService: NasaApiService,
+              private userAuthService: UserAuthenticationService,
+              private authService: AuthService,
               private router: Router,
               private route: ActivatedRoute) { }
 
@@ -22,6 +27,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     this.cccService.currentlyOnHomePageRoute(true);
 
+    const jwt = localStorage.getItem('JWT_TOKEN');
+    if(jwt){
+      this.router.navigate(['/apod'], { replaceUrl: true });
+    }
+
     this.signUpForm = new FormGroup({
       'email': new FormControl(null, [Validators.required, Validators.email]),
       'password': new FormControl(null, [Validators.required, Validators.minLength(6)])
@@ -29,24 +39,61 @@ export class HomePageComponent implements OnInit, OnDestroy {
   }
 
   onSubmitSignUpForm(){
-    this.nasaApiService.registerNewUser(this.signUpForm.value).subscribe(
+    this.userAuthService.registerNewUser(this.signUpForm.value).subscribe(
       (res: {token: string})=>{
+        this.invalidEmail = false;
+        this.emailInUse = false;
+        this.userAuthService.localStrategyUserisAuthenticated.next(true);
         localStorage.setItem('JWT_TOKEN', res.token);
         this.router.navigate(['/apod'], { relativeTo: this.route });
       },
       error=>{
-        // eventually make it so the user is displayed an error message
-        console.error(error.message);
+        if(error.status === 400){
+          this.invalidEmail = true;
+        }
+        else if(error.status === 403){
+          this.emailInUse = true;
+        }
       }
     );
   }
 
-  onGoogleOAuth(){
+  async onGoogleOAuth(){
+    try{
+      let res = await this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
 
+      this.userAuthService.signInGoogle(res.authToken).subscribe(
+        (res: {token: string})=>{
+          localStorage.setItem('JWT_TOKEN', res.token);
+          this.router.navigate(['/apod'], { relativeTo: this.route });
+        },
+        (error)=>{
+          console.error(error);
+        }
+      );
+    }
+    catch(error){
+      console.log(error);
+    }
   }
+  
+  async onFacebookOAuth(){
+    try{
+      let res = await this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+        
+      this.userAuthService.signInFacebook(res.authToken).subscribe(
+        ()=>{
 
-  onFacebookOAuth(){
-
+          this.router.navigate(['/apod'], { relativeTo: this.route });
+        },
+        (error)=>{
+          console.error(error);
+        }
+      );
+    }
+    catch(error) {
+      console.error(error);
+    }
   }
 
   ngOnDestroy(){

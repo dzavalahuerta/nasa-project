@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NasaApiService } from '../services/nasa-api.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-apod',
@@ -19,6 +20,7 @@ export class APODComponent implements OnInit, OnDestroy {
 
   constructor(private nasaApiService: NasaApiService,
               private cccService: CrossComponentCommunicationService,
+              private router: Router,
               public sanitizer: DomSanitizer) { }
 
   checkPageYOffset(){

@@ -23,9 +23,4 @@ export class NasaApiService {
   getPageOfPhotosOfSol(roverName: string, sol, pageNum){
     return this.http.get(`/api/marsPhotos/${roverName}/${sol}/${pageNum}`);
   }
-
-  
-  registerNewUser(userInfo: {email: String, password: String}){
-    return this.http.post('/users/signup', userInfo);
-  }
 }

@@ -94,7 +94,7 @@ export class CuriosityComponent implements OnInit, OnDestroy {
     }
     else{
       this.currentPageOfSol += 1;
-      this.serverService.getPageOfPhotosOfSol('curiosity', this.currentSol, this.currentPageOfSol)
+      this.nasaApiService.getPageOfPhotosOfSol('curiosity', this.currentSol, this.currentPageOfSol)
       .subscribe(
         (nextPageOfPhotos: [])=>{
           nextPageOfPhotos.forEach((photo, index) => {
@@ -143,7 +143,7 @@ export class CuriosityComponent implements OnInit, OnDestroy {
         }
       }
 
-    this.serverService.getPageOfPhotosOfSol('curiosity', this.currentSol, this.currentPageOfSol)
+    this.nasaApiService.getPageOfPhotosOfSol('curiosity', this.currentSol, this.currentPageOfSol)
       .subscribe(
         (photos: [])=>{
           if(photos.length === 0){

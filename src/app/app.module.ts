@@ -18,6 +18,24 @@ import { CrossComponentCommunicationService } from './services/cross-component-c
 import { UserAuthenticationService } from './services/userAuthentication.service';
 
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
+import { GoogleLoginProvider, FacebookLoginProvider } from "angularx-social-login";
+ 
+ 
+let config = new AuthServiceConfig([
+  {
+    id: GoogleLoginProvider.PROVIDER_ID,
+    provider: new GoogleLoginProvider("85125835769-f2rl7v1o6n0ugi0209qcl93pbscmfdod.apps.googleusercontent.com")
+  },
+  {
+    id: FacebookLoginProvider.PROVIDER_ID,
+    provider: new FacebookLoginProvider("486709232093181")
+  }
+]);
+ 
+export function provideConfig() {
+  return config;
+}
 
 const Routes = [
   { path: '', component: HomePageComponent},
@@ -46,9 +64,11 @@ const Routes = [
     RouterModule.forRoot(Routes),
     HttpClientModule,
     InfiniteScrollModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SocialLoginModule
   ],
-  providers: [NasaApiService, CrossComponentCommunicationService, UserAuthenticationService],
+  providers: [NasaApiService, CrossComponentCommunicationService, UserAuthenticationService,
+    {provide: AuthServiceConfig, useFactory: provideConfig}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
