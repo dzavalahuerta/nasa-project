@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
+import { UserAuthenticationService } from '../services/userAuthentication.service';
 
 @Component({
   selector: 'app-page-not-found',
@@ -8,10 +9,16 @@ import { CrossComponentCommunicationService } from '../services/cross-component-
 })
 export class PageNotFoundComponent implements OnInit, OnDestroy {
 
-  constructor(private cccService: CrossComponentCommunicationService) { }
+  constructor(private cccService: CrossComponentCommunicationService,
+              private userAuthService: UserAuthenticationService) { }
 
   ngOnInit() {
     this.cccService.currentlyOnPageNotFoundRoute(true);
+    
+    const jwt = localStorage.getItem('JWT_TOKEN');
+    if(jwt){
+      this.userAuthService.userIsAuthenticated.next(true);
+    }
   }
 
   ngOnDestroy(){

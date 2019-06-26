@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class UserAuthenticationService {
-  localStrategyUserisAuthenticated = new Subject();
+  userIsAuthenticated = new Subject();
   
   constructor(private http: HttpClient) { }
 

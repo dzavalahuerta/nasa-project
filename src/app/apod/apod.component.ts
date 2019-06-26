@@ -20,7 +20,6 @@ export class APODComponent implements OnInit, OnDestroy {
 
   constructor(private nasaApiService: NasaApiService,
               private cccService: CrossComponentCommunicationService,
-              private router: Router,
               public sanitizer: DomSanitizer) { }
 
   checkPageYOffset(){

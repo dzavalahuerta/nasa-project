@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserAuthenticationService } from './services/userAuthentication.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -7,9 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'nasa-project';
 
-  constructor(){ }
+  constructor(private userAuthService: UserAuthenticationService){ }
 
   ngOnInit(){
-    
   }
 }

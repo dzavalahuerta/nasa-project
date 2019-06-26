@@ -18,7 +18,7 @@ export class NavbarComponent implements OnInit {
   apodRoute = false;
   homePageRoute = false;
   pageNotFoundRoute = false;
-  localUserIsAuthenticated = false;
+  userIsAuthenticated = false;
   invalidUserCredentials = false;
   
 
@@ -50,10 +50,10 @@ export class NavbarComponent implements OnInit {
           }
         );
 
-    this.userAuthService.localStrategyUserisAuthenticated
+    this.userAuthService.userIsAuthenticated
       .subscribe(
         (status: boolean)=>{
-          this.localUserIsAuthenticated = status;
+          this.userIsAuthenticated = status;
         }
       );
 
@@ -82,7 +82,7 @@ export class NavbarComponent implements OnInit {
     this.userAuthService.logInLocalStrategy(this.logInForm.value).subscribe(
       (res: {token: string})=>{
         this.invalidUserCredentials = false;
-        this.userAuthService.localStrategyUserisAuthenticated.next(true);
+        this.userAuthService.userIsAuthenticated.next(true);
         localStorage.setItem('JWT_TOKEN', res.token);
         this.logInForm.reset();
         this.router.navigate(['/apod'], { relativeTo: this.route });
@@ -98,14 +98,12 @@ export class NavbarComponent implements OnInit {
       try{
         localStorage.removeItem('JWT_TOKEN');
         this.router.navigate(['/']);
-        return;
       }
       catch(error){
-        this.userAuthService.localStrategyUserisAuthenticated.next(false);
+        this.userAuthService.userIsAuthenticated.next(false);
         localStorage.removeItem('JWT_TOKEN');
         this.router.navigate(['/']);
       }
-    
   }
 
   invalidDate(control: FormControl): Promise<any> | Observable<any>{

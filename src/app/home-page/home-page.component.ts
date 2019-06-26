@@ -43,8 +43,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
       (res: {token: string})=>{
         this.invalidEmail = false;
         this.emailInUse = false;
-        this.userAuthService.localStrategyUserisAuthenticated.next(true);
         localStorage.setItem('JWT_TOKEN', res.token);
+        this.userAuthService.userIsAuthenticated.next(true);
         this.router.navigate(['/apod'], { relativeTo: this.route });
       },
       error=>{
@@ -61,10 +61,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
   async onGoogleOAuth(){
     try{
       let res = await this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-
       this.userAuthService.signInGoogle(res.authToken).subscribe(
         (res: {token: string})=>{
           localStorage.setItem('JWT_TOKEN', res.token);
+          this.userAuthService.userIsAuthenticated.next(true);
           this.router.navigate(['/apod'], { relativeTo: this.route });
         },
         (error)=>{
@@ -80,10 +80,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
   async onFacebookOAuth(){
     try{
       let res = await this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
-        
       this.userAuthService.signInFacebook(res.authToken).subscribe(
-        ()=>{
-
+        (res: {token: string})=>{
+          localStorage.setItem('JWT_TOKEN', res.token);
+          this.userAuthService.userIsAuthenticated.next(true);
           this.router.navigate(['/apod'], { relativeTo: this.route });
         },
         (error)=>{
