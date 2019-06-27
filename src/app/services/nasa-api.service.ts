@@ -6,13 +6,6 @@ function httpOptions(){
   return {headers: new HttpHeaders({'Authorization': localStorage.getItem('JWT_TOKEN')})};
 }
 
-// const httpOptions = 
-// {
-//   headers: new HttpHeaders({
-//     'Authorization': localStorage.getItem('JWT_TOKEN')
-//   })
-// };
-
 @Injectable()
 export class NasaApiService {
 
