@@ -10,3 +10,4 @@ Keeps users up to date with NASA’s APOD archive and photos taken by the Curios
 * Sass
 * Bootstrap
 * https://api.nasa.gov/ REST API
+* Authentication via JSON Web Tokens
