@@ -45,34 +45,44 @@ export class APODComponent implements OnInit, OnDestroy {
       );
 
     this.cccService.userInputApod
-      .subscribe((specificApod: [])=>{
-        specificApod.forEach((apod: any,index)=>{
-          if(apod === ''){
-            specificApod.splice(index, 1);
-          }
-          if(apod.date === '1996-01-01'){
-            this.spinner.nativeElement.style.visibility = "hidden";
-          }
-          else{
-            this.spinner.nativeElement.style.visibility = "visible";
-          }
-        });
-        this.apodArray = specificApod;
-        this.cccService.loadingApods.next(false);
-      });
+      .subscribe(
+        (specificApod: [])=>{
+          specificApod.forEach((apod: any,index)=>{
+            if(apod === ''){
+              specificApod.splice(index, 1);
+            }
+            if(apod.date === '1996-01-01'){
+              this.spinner.nativeElement.style.visibility = "hidden";
+            }
+            else{
+              this.spinner.nativeElement.style.visibility = "visible";
+            }
+          });
+          this.apodArray = specificApod;
+          this.cccService.loadingApods.next(false);
+        },
+        (error)=>{
+          console.log(error);
+        }
+      );
     
     let currentDate = new Date();
     this.nasaApiService.getTenApodJSON(currentDate)
-    .subscribe((tenApodArray)=>{
-      tenApodArray.forEach((apod, index) => {
-        if(apod != ''){
-          this.apodArray.push(apod);
-        }
-        if(index === tenApodArray.length-1){
-          this.noScroll = false;
-        }
-      });
-    });
+    .subscribe(
+      (tenApodArray)=>{
+        tenApodArray.forEach((apod, index) => {
+          if(apod != ''){
+            this.apodArray.push(apod);
+          }
+          if(index === tenApodArray.length-1){
+            this.noScroll = false;
+          }
+        });
+      },
+      (error)=>{
+        console.log(error);
+      }
+    );
   }
 
   scrollUp(){
@@ -143,6 +153,9 @@ export class APODComponent implements OnInit, OnDestroy {
           if(tenApodArray.length === 0){
             this.infiniteScrollToggle = false;
           }
+        },
+        (error)=>{
+          console.error(error);
         }
       );
   }

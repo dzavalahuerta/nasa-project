@@ -47,6 +47,9 @@ export class SpiritComponent implements OnInit, OnDestroy {
       .subscribe(
         (photos: [])=>{
           this.photosOfCurrentSol = photos;
+        },
+        (error)=>{
+          console.log(error);
         }
       );
 
@@ -75,8 +78,10 @@ export class SpiritComponent implements OnInit, OnDestroy {
               }
             }   
           },
-          ()=>{
-            missionManifestCall();
+          (error)=>{
+            if(error.status != 401){
+              missionManifestCall();
+            }
           }
         );
     }
@@ -154,6 +159,9 @@ export class SpiritComponent implements OnInit, OnDestroy {
             this.loading = false;
             this.photosOfCurrentSol = photos;
           }
+        },
+        (error)=>{
+          console.log(error);
         }
       );    
   }

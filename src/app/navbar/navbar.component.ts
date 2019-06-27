@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit {
   
 
   constructor(private cccService: CrossComponentCommunicationService,
-              private authService: AuthService,
+              private socialLoginService: AuthService,
               private userAuthService: UserAuthenticationService,
               private router: Router,
               private route: ActivatedRoute) { }
@@ -81,9 +81,9 @@ export class NavbarComponent implements OnInit {
   onSubmitLogInForm(){
     this.userAuthService.logInLocalStrategy(this.logInForm.value).subscribe(
       (res: {token: string})=>{
+        localStorage.setItem('JWT_TOKEN', res.token);
         this.invalidUserCredentials = false;
         this.userAuthService.userIsAuthenticated.next(true);
-        localStorage.setItem('JWT_TOKEN', res.token);
         this.logInForm.reset();
         this.router.navigate(['/apod'], { relativeTo: this.route });
       },
@@ -94,7 +94,7 @@ export class NavbarComponent implements OnInit {
   }
 
   onLogOut(){
-    this.authService.signOut()
+    this.socialLoginService.signOut()
       try{
         localStorage.removeItem('JWT_TOKEN');
         this.router.navigate(['/']);

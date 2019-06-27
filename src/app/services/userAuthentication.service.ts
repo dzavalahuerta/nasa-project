@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserAuthenticationService {
   userIsAuthenticated = new Subject();
-  
+
   constructor(private http: HttpClient) { }
 
   registerNewUser(userInfo: {email: String, password: String}){

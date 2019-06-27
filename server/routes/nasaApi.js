@@ -4,8 +4,10 @@ const asyncHandler = require('express-async-handler');
 const axios = require('axios');
 const API = "https://api.nasa.gov";
 const apiKey = 'gtVd6XMsShimUg52FqajelftZwHWosfHJc3FtCdQ';
+const passport = require('../passportConfiguration');
+const passportJWT = passport.authenticate('jwt', { session: false });
 
-router.get('/10apod/:date',asyncHandler(async(req,res)=>{
+router.route('/10apod/:date').get(passportJWT, asyncHandler(async(req,res)=>{
     const tenApodJSON = {tenApodArray: []};
     
     let date = req.params.date;
@@ -82,7 +84,7 @@ router.get('/10apod/:date',asyncHandler(async(req,res)=>{
     res.status(200).json(tenApodJSON);
 }));
 
-router.get('/missionManifest/:roverName',asyncHandler(async(req,res)=>{
+router.route('/missionManifest/:roverName').get(passportJWT, asyncHandler(async(req,res)=>{
     let roverName = req.params.roverName;
     
     await axios.get(`${API}/mars-photos/api/v1/manifests/${roverName}?api_key=${apiKey}`)
@@ -95,7 +97,7 @@ router.get('/missionManifest/:roverName',asyncHandler(async(req,res)=>{
     });
 }));
 
-router.get('/marsPhotos/:roverName/:sol/:pageNum',asyncHandler(async(req,res)=>{
+router.route('/marsPhotos/:roverName/:sol/:pageNum').get(passportJWT, asyncHandler(async(req,res)=>{
     let roverName = req.params.roverName;
     let sol = req.params.sol;
     let pageNum = req.params.pageNum;

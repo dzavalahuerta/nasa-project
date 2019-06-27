@@ -18,7 +18,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   constructor(private cccService: CrossComponentCommunicationService,
               private userAuthService: UserAuthenticationService,
-              private authService: AuthService,
+              private socialLoginService: AuthService,
               private router: Router,
               private route: ActivatedRoute) { }
 
@@ -41,9 +41,9 @@ export class HomePageComponent implements OnInit, OnDestroy {
   onSubmitSignUpForm(){
     this.userAuthService.registerNewUser(this.signUpForm.value).subscribe(
       (res: {token: string})=>{
+        localStorage.setItem('JWT_TOKEN', res.token);
         this.invalidEmail = false;
         this.emailInUse = false;
-        localStorage.setItem('JWT_TOKEN', res.token);
         this.userAuthService.userIsAuthenticated.next(true);
         this.router.navigate(['/apod'], { relativeTo: this.route });
       },
@@ -60,7 +60,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   async onGoogleOAuth(){
     try{
-      let res = await this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+      let res = await this.socialLoginService.signIn(GoogleLoginProvider.PROVIDER_ID);
       this.userAuthService.signInGoogle(res.authToken).subscribe(
         (res: {token: string})=>{
           localStorage.setItem('JWT_TOKEN', res.token);
@@ -79,7 +79,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
   
   async onFacebookOAuth(){
     try{
-      let res = await this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+      let res = await this.socialLoginService.signIn(FacebookLoginProvider.PROVIDER_ID);
       this.userAuthService.signInFacebook(res.authToken).subscribe(
         (res: {token: string})=>{
           localStorage.setItem('JWT_TOKEN', res.token);
