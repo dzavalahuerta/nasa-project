@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./curiosity.component.sass']
 })
 export class CuriosityComponent implements OnInit, OnDestroy {
-  @ViewChild('form') form;
+  @ViewChild('form', {static: false}) form;
   solSelectorForm: FormGroup;
   infiniteScrollToggle = false;
   loading = false;

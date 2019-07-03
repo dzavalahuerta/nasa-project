@@ -9,7 +9,7 @@ import { CrossComponentCommunicationService } from '../services/cross-component-
   styleUrls: ['./apod.component.sass']
 })
 export class APODComponent implements OnInit, OnDestroy {
-  @ViewChild('spinner') spinner;
+  @ViewChild('spinner', {static: false}) spinner;
   apodArray: [] = [];
   infiniteScrollToggle = false;
   noScroll = true;
@@ -129,6 +129,7 @@ export class APODComponent implements OnInit, OnDestroy {
   }
 
   getTenMoreApod(){
+    console.log('infinite scroll is triggered');
     this.infiniteScrollToggle = true;
 
     let dateForNextBatch = this.getDateForNextBatch();
@@ -158,6 +159,7 @@ export class APODComponent implements OnInit, OnDestroy {
           console.error(error);
         }
       );
+      console.log('getTenMoreApod finishes');
   }
 
   ngOnDestroy(){

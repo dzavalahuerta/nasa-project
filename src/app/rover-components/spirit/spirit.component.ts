@@ -9,7 +9,7 @@ import {NasaApiService } from 'src/app/services/nasa-api.service';
   styleUrls: ['./spirit.component.sass']
 })
 export class SpiritComponent implements OnInit, OnDestroy {
-  @ViewChild('form') form;
+  @ViewChild('form', {static: false}) form;
   solSelectorForm: FormGroup;
   infiniteScrollToggle = false;
   loading = false;

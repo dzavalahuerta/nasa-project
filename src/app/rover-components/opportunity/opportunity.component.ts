@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./opportunity.component.sass']
 })
 export class OpportunityComponent implements OnInit, OnDestroy {
-  @ViewChild('form') form;
+  @ViewChild('form', {static: false}) form;
   solSelectorForm: FormGroup;
   infiniteScrollToggle = false;
   loading = false;
