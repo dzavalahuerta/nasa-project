@@ -21,10 +21,8 @@ module.exports = {
             };
             await existingUser.save();
             const token = signToken(existingUser);
-            return res.status(200).json({
-                token,
-                methods: existingUser.methods
-            });
+            res.cookie('access_token', token, {httpOnly: true});
+            return res.status(200).json({ success: true });
         }
         let existingUser;
 
@@ -32,12 +30,7 @@ module.exports = {
             return res.status(403).json({ error: "Email already in use" });
         }
 
-        if(existingUser = await User.findOne({ "google.email": email })){
-            addLocalMethodToExistingAccount();
-            return;
-        }
-        
-        if(existingUser = await User.findOne({ "facebook.email": email })){
+        if(existingUser = await User.findOne({$or: [{"google.email": email}, {"facebook.email": email}] })){
             addLocalMethodToExistingAccount();
             return;
         }
@@ -51,34 +44,31 @@ module.exports = {
         });
         await newUser.save();
         const token = signToken(newUser);
-        res.status(200).json({
-            token,
-            methods: newUser.methods
-        });
+        res.cookie('access_token', token, {httpOnly: true});
+        res.status(200).json({ success: true });
     },
     
     signIn: async(req,res,next)=>{
         const token = signToken(req.user);
-        res.status(200).json({
-            token,
-            methods: req.user.methods
-        });
+        res.cookie('access_token', token, {httpOnly: true});
+        res.status(200).json({ success: true });
+    },
+
+    signOut: async(req,res,next)=>{
+        res.clearCookie('access_token');
+        res.status(200).json({ success: true });
     },
 
     googleOAuth: async(req,res,next)=>{   
         const token = signToken(req.user);
-        res.status(200).json({
-            token,
-            methods: req.user.methods
-        });
+        res.cookie('access_token', token, {httpOnly: true});
+        res.status(200).json({ success: true });
     },
 
     facebookOAuth: async(req,res,next)=>{
         const token = signToken(req.user);
-        res.status(200).json({
-            token,
-            methods: req.user.methods
-        });
+        res.cookie('access_token', token, {httpOnly: true});
+        res.status(200).json({ success: true });
     },
 
     linkGoogle: async(req,res,next)=>{
@@ -91,8 +81,8 @@ module.exports = {
 
     unlinkGoogle: async(req,res,next)=>{
         try {
-            const user = await User.findOneAndUpdate({"_id": req.user._id}, {$unset: {google: 1}, $pull: {methods: {$in: ["google"]}}}, {new: true});
-            res.status(200).json({ methods: user.methods});
+            const user = await User.findOneAndUpdate({"_id": req.user._id}, {$unset: {google: 1}, $pull: {methods: {$in: ["google"]}}}, {new: true, useFindAndModify: false});
+            res.status(200).json({ methods: user.methods });
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
@@ -100,14 +90,15 @@ module.exports = {
     
     unlinkFacebook: async(req,res,next)=>{
         try {
-            const user = await User.findOneAndUpdate({"_id": req.user._id}, {$unset: {facebook: 1}, $pull: {methods: {$in: ["facebook"]}}}, {new: true});
+            const user = await User.findOneAndUpdate({"_id": req.user._id}, {$unset: {facebook: 1}, $pull: {methods: {$in: ["facebook"]}}}, {new: true, useFindAndModify: false});
             res.status(200).json({ methods: user.methods });
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
     },
 
-    getUserAuthenticationMethods: async(req,res,next)=>{
+    getUserAuthenticationStatusAndMethods: async(req,res,next)=>{
+        console.log(req.user.methods)
         res.status(200).json({ methods: req.user.methods });
     }
 }

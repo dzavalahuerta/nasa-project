@@ -9,23 +9,20 @@ import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-logi
   styleUrls: ['./link-social-media.component.sass']
 })
 export class LinkSocialMediaComponent implements OnInit {
-  userAuthenticationMethods: string[];
+  userAuthenticationMethods: string[] = [''];
 
   constructor(private userAuthService: UserAuthenticationService,
               private socialLoginService: AuthService) { }
 
   ngOnInit() {
-    this.userAuthenticationMethods = this.userAuthService.userAuthenticationMethods;
-    if(this.userAuthenticationMethods === undefined){
-      this.userAuthService.getUserAuthenticationMethods().subscribe(
-        (res: { methods: string[]})=>{
-          this.userAuthenticationMethods = res.methods;
-        },
-        (error)=>{
-          console.error(error);
-        }
-      );
-    }
+    this.userAuthService.getUserAuthenticationStatusAndMethods().subscribe(
+      (res:{methods: string[]})=>{
+        this.userAuthenticationMethods = res.methods;
+      },
+      (error)=>{
+        alert(error);
+      }
+    );
   }
 
   async linkGoogleAccount(){

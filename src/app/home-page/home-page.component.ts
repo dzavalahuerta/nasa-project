@@ -25,10 +25,13 @@ export class HomePageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.cccService.currentlyOnHomePageRoute(true);
 
-    const jwt = localStorage.getItem('JWT_TOKEN');
-    if(jwt){
-      this.router.navigate(['/apod'], { replaceUrl: true });
-    }
+    this.userAuthService.userIsAuthenticated.subscribe(
+      (status)=>{
+        if(status === true){
+          this.router.navigate(['/apod']);
+        }
+      }
+    );
 
     this.signUpForm = new FormGroup({
       'email': new FormControl(null, [Validators.required, Validators.email]),
@@ -38,12 +41,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   onSubmitSignUpForm(){
     this.userAuthService.registerNewUser(this.signUpForm.value).subscribe(
-      (res: {token: string, methods: string[]})=>{
-        localStorage.setItem('JWT_TOKEN', res.token);
+      ()=>{
         this.invalidEmail = false;
         this.emailInUse = false;
         this.userAuthService.userIsAuthenticated.next(true);
-        this.userAuthService.setUserAuthenticationMethods(res.methods);
         this.router.navigate(['/apod'], { relativeTo: this.route });
       },
       error=>{
@@ -61,10 +62,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
     try{
       let res = await this.socialLoginService.signIn(GoogleLoginProvider.PROVIDER_ID);
       this.userAuthService.signInGoogle(res.authToken).subscribe(
-        (res: {token: string, methods: string[]})=>{
-          localStorage.setItem('JWT_TOKEN', res.token);
+        ()=>{
           this.userAuthService.userIsAuthenticated.next(true);
-          this.userAuthService.setUserAuthenticationMethods(res.methods);
           this.router.navigate(['/apod'], { relativeTo: this.route });
         },
         (error)=>{
@@ -81,10 +80,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
     try{
       let res = await this.socialLoginService.signIn(FacebookLoginProvider.PROVIDER_ID);
       this.userAuthService.signInFacebook(res.authToken).subscribe(
-        (res: {token: string, methods: string[]})=>{
-          localStorage.setItem('JWT_TOKEN', res.token);
+        ()=>{
           this.userAuthService.userIsAuthenticated.next(true);
-          this.userAuthService.setUserAuthenticationMethods(res.methods);
           this.router.navigate(['/apod'], { relativeTo: this.route });
         },
         (error)=>{

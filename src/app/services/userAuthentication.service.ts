@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-function setAuthHeader(){
-  return {headers: new HttpHeaders({'Authorization': localStorage.getItem('JWT_TOKEN')})};
-}
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +8,11 @@ function setAuthHeader(){
 
 export class UserAuthenticationService {
   userIsAuthenticated = new Subject();
-  userAuthenticationMethods: string[];
-
-  setUserAuthenticationMethods(methods: string[]){
-    this.userAuthenticationMethods = methods;
-  };
 
   constructor(private http: HttpClient) { }
-
-  getUserAuthenticationMethods(){
-    return this.http.get('/users/get-user-authentication-methods', setAuthHeader());
+  
+  getUserAuthenticationStatusAndMethods(){
+    return this.http.get('/users/get-user-authentication-status-and-methods');
   };
 
   registerNewUser(userInfo: {email: String, password: String}){
@@ -32,27 +23,31 @@ export class UserAuthenticationService {
     return this.http.post('/users/signin', userInfo);
   };
 
+  logOut(){
+    return this.http.get('/users/signout');
+  };
+
   signInGoogle(access_token){
     return this.http.post('/users/oauth/google', {access_token});
+  };
+  
+  linkGoogleAccount(access_token){
+    return this.http.post('/users/oauth/link/google', {access_token});
+  };
+  
+  unlinkGoogleAccount(){
+    return this.http.post('/users/oauth/unlink/google', null);
   };
 
   signInFacebook(access_token){
     return this.http.post('/users/oauth/facebook', {access_token});
   };
 
-  linkGoogleAccount(access_token){
-    return this.http.post('/users/oauth/link/google', {access_token}, setAuthHeader());
-  };
-
   linkFacebookAccount(access_token){
-    return this.http.post('/users/oauth/link/facebook', {access_token}, setAuthHeader());
-  };
-
-  unlinkGoogleAccount(){
-    return this.http.post('/users/oauth/unlink/google', null, setAuthHeader());
+    return this.http.post('/users/oauth/link/facebook', {access_token});
   };
 
   unlinkFacebookAccount(){
-    return this.http.post('/users/oauth/unlink/facebook', null, setAuthHeader());
+    return this.http.post('/users/oauth/unlink/facebook', null);
   };
 }

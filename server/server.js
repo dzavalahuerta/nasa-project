@@ -4,11 +4,13 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 require('dotenv').config('../server');
+const cookieParser = require('cookie-parser');
 
 mongoose.connect(process.env.MONGOATLAS_URL, {useNewUrlParser: true});
 
 const app = express();
 
+app.use(cookieParser());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 

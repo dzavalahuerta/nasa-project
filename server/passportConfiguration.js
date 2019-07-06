@@ -4,11 +4,17 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const GooglePlusTokenStrategy = require('passport-google-plus-token');
 const FacebookTokenStrategy = require('passport-facebook-token');
-
 const User = require('./models/user');
+const cookieExtractor = req =>{
+    let token = null;
+    if(req && req.cookies){
+        token = req.cookies['access_token'];
+    }
+    return token;
+};
 
 passport.use(new JwtStrategy({
-    jwtFromRequest: ExtractJwt.fromHeader('authorization'),
+    jwtFromRequest: cookieExtractor,
     secretOrKey: process.env.JWT_SECRET,
     passReqToCallback: true
 }, async(req, payload, done)=>{

@@ -3,7 +3,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from 'angularx-social-login';
 import { UserAuthenticationService } from '../services/userAuthentication.service';
 
 @Component({
@@ -23,7 +22,6 @@ export class NavbarComponent implements OnInit {
   
 
   constructor(private cccService: CrossComponentCommunicationService,
-              private socialLoginService: AuthService,
               private userAuthService: UserAuthenticationService,
               private router: Router,
               private route: ActivatedRoute) { }
@@ -50,12 +48,11 @@ export class NavbarComponent implements OnInit {
           }
         );
 
-    this.userAuthService.userIsAuthenticated
-      .subscribe(
-        (status: boolean)=>{
-          this.userIsAuthenticated = status;
-        }
-      );
+    this.userAuthService.userIsAuthenticated.subscribe(
+      (status: boolean)=>{
+        this.userIsAuthenticated = status;
+      }
+    );
 
     this.searchForm = new FormGroup({
       'searchFormInput': new FormControl(null, [Validators.required], this.invalidDate)
@@ -80,12 +77,9 @@ export class NavbarComponent implements OnInit {
 
   onSubmitLogInForm(){
     this.userAuthService.logInLocalStrategy(this.logInForm.value).subscribe(
-      (res: {token: string, methods: string[]})=>{
-        console.log(res);
-        localStorage.setItem('JWT_TOKEN', res.token);
+      ()=>{
         this.invalidUserCredentials = false;
         this.userAuthService.userIsAuthenticated.next(true);
-        this.userAuthService.setUserAuthenticationMethods(res.methods);
         this.logInForm.reset();
         this.router.navigate(['/apod'], { relativeTo: this.route });
       },
@@ -96,18 +90,14 @@ export class NavbarComponent implements OnInit {
   }
 
   onLogOut(){
-    this.socialLoginService.signOut()
-      try{
-        this.userAuthService.setUserAuthenticationMethods(['']);
-        localStorage.removeItem('JWT_TOKEN');
-        this.router.navigate(['/']);
-      }
-      catch(error){
+    this.userAuthService.logOut().subscribe(
+      ()=>{
         this.userAuthService.userIsAuthenticated.next(false);
-        this.userAuthService.setUserAuthenticationMethods(['']);
-        localStorage.removeItem('JWT_TOKEN');
-        this.router.navigate(['/']);
+      },
+      (error)=>{
+        console.error(error);
       }
+    );
   }
 
   invalidDate(control: FormControl): Promise<any> | Observable<any>{

@@ -14,6 +14,9 @@ router.route('/signup')
 router.route('/signin')
     .post(validateBody(schemas.authSchema), passportSignIn, UsersController.signIn);
 
+router.route('/signout')
+    .get(passportJWT, UsersController.signOut);
+
 router.route('/oauth/google')
     .post(passportGoogleOAuth, UsersController.googleOAuth);
 
@@ -32,7 +35,7 @@ router.route('/oauth/unlink/google')
 router.route('/oauth/unlink/facebook')
     .post(passportJWT, UsersController.unlinkFacebook);
 
-router.route('/get-user-authentication-methods')
-    .get(passportJWT, UsersController.getUserAuthenticationMethods);
+router.route('/get-user-authentication-status-and-methods')
+    .get(passportJWT, UsersController.getUserAuthenticationStatusAndMethods);
 
 module.exports = router;
