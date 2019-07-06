@@ -10,3 +10,12 @@ Keeps users up to date with NASA’s APOD archive and photos taken by the Curios
 * Sass
 * Bootstrap
 * https://api.nasa.gov/ REST API
+* Authentication via JSON Web Tokens
+
+## Planned improvements:
+
+* Store JSON Web Tokens in cookies instead of localstorage to increase security.
+* Add refreshTokens.
+* Introduce Auth-Guard service to protect pages from unauthorized users.
+* Modularize related components.
+* Refactor rover components.
