@@ -20,6 +20,9 @@ import { UserAuthenticationService } from './services/userAuthentication.service
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
 import { GoogleLoginProvider, FacebookLoginProvider } from "angularx-social-login";
+import { AccountSettingsComponent } from './user-account/account-settings/account-settings.component';
+import { LinkSocialMediaComponent } from './user-account/link-social-media/link-social-media.component';
+import { ProfileComponent } from './user-account/profile/profile.component';
  
  
 let config = new AuthServiceConfig([
@@ -41,9 +44,15 @@ const Routes = [
   { path: '', component: HomePageComponent},
   { path: 'apod', component: APODComponent},
   { path: 'rovers', children: [
+    {path: '', redirectTo: 'curiosity', pathMatch: 'full'},
     { path: 'curiosity', component: CuriosityComponent },
     { path: 'opportunity', component: OpportunityComponent },
     { path: 'spirit', component: SpiritComponent }
+  ]},
+  { path: 'account-settings', component: AccountSettingsComponent, children: [
+    {path: '', redirectTo: 'profile', pathMatch: 'full'},
+    { path: 'profile', component: ProfileComponent },
+    { path: 'link-social-media', component: LinkSocialMediaComponent }
   ]},
   { path: '**', component: PageNotFoundComponent}
 ]
@@ -57,7 +66,10 @@ const Routes = [
     SpiritComponent,
     CuriosityComponent,
     OpportunityComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    AccountSettingsComponent,
+    LinkSocialMediaComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

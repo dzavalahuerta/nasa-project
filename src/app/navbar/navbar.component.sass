@@ -44,11 +44,41 @@
   ul
     li
       white-space: nowrap
+      position: relative
       &:last-child
         margin-left: 2em
-        cursor: pointer
         +medium-screen
           margin: 2em auto 0
+        a
+          svg
+            height: 13px
+            width: 13px
+        ul
+          display: none
+          position: absolute
+          list-style-type: none
+          background-color: white
+          width: 135px
+          right: 5px
+          border-radius: 3px
+          box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+          li
+            margin: 1em 0 1em -2.5em
+            padding-left: 1em
+            color: black
+            cursor: pointer
+      &:hover
+        ul
+          display: block
+          &::after
+            left: auto
+            right: 15px
+            top: -14px
+            border: 7px solid transparent
+            border-bottom-color: #fff
+            content: ""
+            display: inline-block
+            position: absolute
 
 .home-page-nav
   background-color: #0b3d91

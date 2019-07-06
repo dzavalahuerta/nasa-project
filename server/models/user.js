@@ -3,9 +3,8 @@ const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    method: {
-        type: String,
-        enum: ['local', 'google', 'facebook'],
+    methods: {
+        type: [String],
         required: true
     },
     local: {
@@ -39,7 +38,10 @@ const userSchema = new Schema({
 
 userSchema.pre('save', async function(next){    
     try{
-        if(this.method != 'local') next();
+        if(!this.methods.includes('local')) next();
+
+        const user = this;
+        if(!user.isModified('local.password')) next();
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(this.local.password, salt);

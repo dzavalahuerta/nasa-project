@@ -9,15 +9,17 @@ const User = require('./models/user');
 
 passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-    secretOrKey: process.env.JWT_SECRET
-}, async(payload, done)=>{
+    secretOrKey: process.env.JWT_SECRET,
+    passReqToCallback: true
+}, async(req, payload, done)=>{
     try{
-        const user = await User.findById(payload.sub);
+        let user = await User.findById(payload.sub);
         
         if(!user){
             return done(null, false);
         }
 
+        req.user = user;
         done(null, user);
     }
     catch(error){
@@ -27,23 +29,48 @@ passport.use(new JwtStrategy({
 
 passport.use('googleToken', new GooglePlusTokenStrategy({
     clientID: process.env.GOOGLE_TOKEN_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_TOKEN_CLIENT_SECRET
-}, async (accessToken, refreshToken, profile, done)=>{
+    clientSecret: process.env.GOOGLE_TOKEN_CLIENT_SECRET,
+    passReqToCallback: true
+}, async (req, accessToken, refreshToken, profile, done)=>{
     try {
-        const existingUser = await User.findOne({ "google.id": profile.id });
-        if(existingUser){            
-            return done(null, existingUser);
-        }
-        const newUser = new User({
-            method: 'google',
-            google: {
+        if(req.user){
+            req.user.methods.push('google');
+            req.user.google = {
                 id: profile.id,
                 email: profile.emails[0].value
+            };
+            await req.user.save();
+            return done(null, req.user);
+        }
+        else{
+            let existingUser = await User.findOne({ "google.id": profile.id });
+            if(existingUser){            
+                return done(null, existingUser);
             }
-        });
-    
-        await newUser.save();
-        done(null, newUser);
+
+            existingUser = await User.findOne({ "local.email": profile.emails[0].value });
+            if(existingUser){
+                existingUser.methods.push('google');
+                
+                existingUser.google = {
+                    id: profile.id,
+                    email: profile.emails[0].value
+                }
+                await existingUser.save();
+                return done(null, existingUser);
+            }
+
+            const newUser = new User({
+                methods: ['google'],
+                google: {
+                    id: profile.id,
+                    email: profile.emails[0].value
+                }
+            });
+        
+            await newUser.save();
+            return done(null, newUser);
+        }
     } catch (error) {
         done(error, false, error.message);
     }
@@ -52,45 +79,68 @@ passport.use('googleToken', new GooglePlusTokenStrategy({
 passport.use('facebookToken', new FacebookTokenStrategy(
     {
         clientID: process.env.FACEBOOK_TOKEN_CLIENT_ID,
-        clientSecret: process.env.FACEBOOK_TOKEN_CLIENT_SECRET
+        clientSecret: process.env.FACEBOOK_TOKEN_CLIENT_SECRET,
+        passReqToCallback: true
     },
-    async(accessToken, refreshToken, profile, done)=>{
+    async(req, accessToken, refreshToken, profile, done)=>{
         try {
-            const existingUser = await User.findOne({ "facebook.id": profile.id });
-            if(existingUser){
-                return done(null, existingUser);
-            }
-            const newUser = new User({
-                method: 'facebook',
-                facebook: {
+            if(req.user){
+                req.user.methods.push('facebook');
+                req.user.facebook = {
                     id: profile.id,
                     email: profile.emails[0].value
+                };
+                await req.user.save();
+                return done(null, req.user);
+            }
+            else{
+                let existingUser = await User.findOne({ "facebook.id": profile.id });
+                if(existingUser){
+                    return done(null, existingUser);
                 }
-            });
-
-            await newUser.save();
-            done(null, newUser);
-        }catch (error) {
+    
+                existingUser = await User.findOne({ "local.email": profile.emails[0].value });
+                if(existingUser){
+                    existingUser.methods.push('facebook');
+                    existingUser.facebook = {
+                        id: profile.id,
+                        email: profile.emails[0].value
+                    }
+                await existingUser.save();
+                return done(null, existingUser);
+                }
+    
+                const newUser = new User({
+                    method: ['facebook'],
+                    facebook: {
+                        id: profile.id,
+                        email: profile.emails[0].value
+                    }
+                });
+    
+                await newUser.save();
+                done(null, newUser);
+            }
+        }
+        catch (error) {
             done(error, false, error.message);
         }
-    }
-));
+    }));
 
 passport.use(new LocalStrategy({
     usernameField: 'email'
 }, async(email, password, done)=>{
     try{
         const user = await User.findOne({ "local.email": email });
-    
         if(!user){
             return done(null, false);
         }
-    
+        
         const answer = await user.doesPasswordMatch(password);
         if(answer === false){
             return done(null, false);
         }
-    
+        
         done(null, user);
     }
     catch(error){
