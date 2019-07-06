@@ -32,4 +32,7 @@ router.route('/oauth/unlink/google')
 router.route('/oauth/unlink/facebook')
     .post(passportJWT, UsersController.unlinkFacebook);
 
+router.route('/get-user-authentication-methods')
+    .get(passportJWT, UsersController.getUserAuthenticationMethods);
+
 module.exports = router;

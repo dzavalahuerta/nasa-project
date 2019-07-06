@@ -127,7 +127,6 @@ export class APODComponent implements OnInit, OnDestroy {
   }
 
   getTenMoreApod(){
-    console.log('infinite scroll is triggered');
     this.infiniteScrollToggle = true;
 
     let dateForNextBatch = this.getDateForNextBatch();
@@ -157,7 +156,6 @@ export class APODComponent implements OnInit, OnDestroy {
           console.error(error);
         }
       );
-      console.log('getTenMoreApod finishes');
   }
 
   ngOnDestroy(){

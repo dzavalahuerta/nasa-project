@@ -105,5 +105,9 @@ module.exports = {
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
+    },
+
+    getUserAuthenticationMethods: async(req,res,next)=>{
+        res.status(200).json({ methods: req.user.methods });
     }
 }

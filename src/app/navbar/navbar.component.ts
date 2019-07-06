@@ -80,11 +80,12 @@ export class NavbarComponent implements OnInit {
 
   onSubmitLogInForm(){
     this.userAuthService.logInLocalStrategy(this.logInForm.value).subscribe(
-      (res: {token: string, methods: [String]})=>{
+      (res: {token: string, methods: string[]})=>{
         console.log(res);
         localStorage.setItem('JWT_TOKEN', res.token);
         this.invalidUserCredentials = false;
-        this.userAuthService.userIsAuthenticated.next(true);          this.userAuthService.userAuthenticationMethods = res.methods;
+        this.userAuthService.userIsAuthenticated.next(true);
+        this.userAuthService.setUserAuthenticationMethods(res.methods);
         this.logInForm.reset();
         this.router.navigate(['/apod'], { relativeTo: this.route });
       },
@@ -97,14 +98,14 @@ export class NavbarComponent implements OnInit {
   onLogOut(){
     this.socialLoginService.signOut()
       try{
+        this.userAuthService.setUserAuthenticationMethods(['']);
         localStorage.removeItem('JWT_TOKEN');
-        this.userAuthService.userAuthenticationMethods = [''];
         this.router.navigate(['/']);
       }
       catch(error){
         this.userAuthService.userIsAuthenticated.next(false);
+        this.userAuthService.setUserAuthenticationMethods(['']);
         localStorage.removeItem('JWT_TOKEN');
-        this.userAuthService.userAuthenticationMethods = [''];
         this.router.navigate(['/']);
       }
   }

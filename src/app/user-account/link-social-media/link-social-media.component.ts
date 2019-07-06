@@ -9,20 +9,30 @@ import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-logi
   styleUrls: ['./link-social-media.component.sass']
 })
 export class LinkSocialMediaComponent implements OnInit {
-  userAuthenticationMethods: [String] = this.userAuthService.userAuthenticationMethods;
+  userAuthenticationMethods: string[];
 
   constructor(private userAuthService: UserAuthenticationService,
               private socialLoginService: AuthService) { }
 
   ngOnInit() {
+    this.userAuthenticationMethods = this.userAuthService.userAuthenticationMethods;
+    if(this.userAuthenticationMethods === undefined){
+      this.userAuthService.getUserAuthenticationMethods().subscribe(
+        (res: { methods: string[]})=>{
+          this.userAuthenticationMethods = res.methods;
+        },
+        (error)=>{
+          console.error(error);
+        }
+      );
+    }
   }
 
-  
   async linkGoogleAccount(){
     try{
       let res = await this.socialLoginService.signIn(GoogleLoginProvider.PROVIDER_ID);
       this.userAuthService.linkGoogleAccount(res.authToken).subscribe(
-        (res: { methods: [String] })=>{
+        (res: { methods: string[] })=>{
           this.userAuthenticationMethods = res.methods;
         },
         (error)=>{
@@ -39,7 +49,7 @@ export class LinkSocialMediaComponent implements OnInit {
     try{
       let res = await this.socialLoginService.signIn(FacebookLoginProvider.PROVIDER_ID);
       this.userAuthService.linkFacebookAccount(res.authToken).subscribe(
-        (res: { methods: [String] })=>{
+        (res: { methods: string[] })=>{
           this.userAuthenticationMethods = res.methods;
         },
         (error)=>{
@@ -54,7 +64,7 @@ export class LinkSocialMediaComponent implements OnInit {
 
   unlinkGoogleAccount(){
     this.userAuthService.unlinkGoogleAccount().subscribe(
-      (res: {methods: [String]})=>{
+      (res: {methods: string[]})=>{
         this.userAuthenticationMethods = res.methods;
       },
       (error)=>{
@@ -65,7 +75,7 @@ export class LinkSocialMediaComponent implements OnInit {
     
   unlinkFacebookAccount(){
     this.userAuthService.unlinkFacebookAccount().subscribe(
-      (res: {methods: [String]})=>{
+      (res: {methods: string[]})=>{
         this.userAuthenticationMethods = res.methods;
       },
       (error)=>{
@@ -74,7 +84,7 @@ export class LinkSocialMediaComponent implements OnInit {
     );
   }
 
-  doesUserAuthenticationMethodsInclude(method: String){
+  doesUserAuthenticationMethodsInclude(method: string){
     if(this.userAuthenticationMethods.includes(method)){
       return true;
     }

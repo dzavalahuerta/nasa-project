@@ -38,11 +38,12 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
   onSubmitSignUpForm(){
     this.userAuthService.registerNewUser(this.signUpForm.value).subscribe(
-      (res: {token: string, methods: [String]})=>{
+      (res: {token: string, methods: string[]})=>{
         localStorage.setItem('JWT_TOKEN', res.token);
         this.invalidEmail = false;
         this.emailInUse = false;
-        this.userAuthService.userIsAuthenticated.next(true);          this.userAuthService.userAuthenticationMethods = res.methods;
+        this.userAuthService.userIsAuthenticated.next(true);
+        this.userAuthService.setUserAuthenticationMethods(res.methods);
         this.router.navigate(['/apod'], { relativeTo: this.route });
       },
       error=>{
@@ -60,10 +61,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
     try{
       let res = await this.socialLoginService.signIn(GoogleLoginProvider.PROVIDER_ID);
       this.userAuthService.signInGoogle(res.authToken).subscribe(
-        (res: {token: string, methods: [String]})=>{
+        (res: {token: string, methods: string[]})=>{
           localStorage.setItem('JWT_TOKEN', res.token);
           this.userAuthService.userIsAuthenticated.next(true);
-          this.userAuthService.userAuthenticationMethods = res.methods;
+          this.userAuthService.setUserAuthenticationMethods(res.methods);
           this.router.navigate(['/apod'], { relativeTo: this.route });
         },
         (error)=>{
@@ -80,10 +81,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
     try{
       let res = await this.socialLoginService.signIn(FacebookLoginProvider.PROVIDER_ID);
       this.userAuthService.signInFacebook(res.authToken).subscribe(
-        (res: {token: string, methods: [String]})=>{
+        (res: {token: string, methods: string[]})=>{
           localStorage.setItem('JWT_TOKEN', res.token);
           this.userAuthService.userIsAuthenticated.next(true);
-          this.userAuthService.userAuthenticationMethods = res.methods;
+          this.userAuthService.setUserAuthenticationMethods(res.methods);
           this.router.navigate(['/apod'], { relativeTo: this.route });
         },
         (error)=>{
