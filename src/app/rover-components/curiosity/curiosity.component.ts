@@ -186,6 +186,7 @@ export class CuriosityComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
+    document.body.style.backgroundColor = "white";
     window.scrollTo(0,0);
     window.removeEventListener('scroll', this.checkPageYOffset, true);
   }
