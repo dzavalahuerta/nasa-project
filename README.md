@@ -14,8 +14,8 @@ Keeps users up to date with NASA’s APOD archive and photos taken by the Curios
 
 ## Planned improvements:
 
-* Store JSON Web Tokens in cookies instead of localstorage to increase security.
-* Add refreshTokens.
-* Introduce Auth-Guard service to protect pages from unauthorized users.
-* Modularize related components.
-* Refactor rover components.
+- [x] Store JSON Web Tokens in cookies instead of localstorage to increase security.
+- [ ] Add refreshTokens.
+- [ ] Introduce Auth-Guard service to protect pages from unauthorized users.
+- [ ] Modularize related components.
+- [ ] Refactor and try to make code more DRY.
