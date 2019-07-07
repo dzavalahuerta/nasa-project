@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { NasaApiService } from 'src/app/services/nasa-api.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
+import {NasaApiService } from 'src/app/NASA-api-content/nasa-api.service';
 
 @Component({
-  selector: 'app-opportunity',
-  templateUrl: './opportunity.component.html',
-  styleUrls: ['./opportunity.component.sass']
+  selector: 'app-spirit',
+  templateUrl: './spirit.component.html',
+  styleUrls: ['./spirit.component.sass']
 })
-export class OpportunityComponent implements OnInit, OnDestroy {
+export class SpiritComponent implements OnInit, OnDestroy {
   @ViewChild('form', {static: false}) form;
   solSelectorForm: FormGroup;
   infiniteScrollToggle = false;
@@ -43,7 +43,7 @@ export class OpportunityComponent implements OnInit, OnDestroy {
     this.currentSol = 1;
     this.currentPageOfSol = 1;
     
-    this.nasaApiService.getPageOfPhotosOfSol('opportunity', this.currentSol, this.currentPageOfSol)
+    this.nasaApiService.getPageOfPhotosOfSol('spirit', this.currentSol, this.currentPageOfSol)
       .subscribe(
         (photos: [])=>{
           this.photosOfCurrentSol = photos;
@@ -54,7 +54,7 @@ export class OpportunityComponent implements OnInit, OnDestroy {
       );
 
     let missionManifestCall = ()=>{
-      this.nasaApiService.getMissionManifest('opportunity')
+      this.nasaApiService.getMissionManifest('spirit')
         .subscribe(
           async missionManifest=>{
             this.missionManifest = await missionManifest;
@@ -99,7 +99,7 @@ export class OpportunityComponent implements OnInit, OnDestroy {
     }
     else{
       this.currentPageOfSol += 1;
-      this.nasaApiService.getPageOfPhotosOfSol('opportunity', this.currentSol, this.currentPageOfSol)
+      this.nasaApiService.getPageOfPhotosOfSol('spirit', this.currentSol, this.currentPageOfSol)
       .subscribe(
         (nextPageOfPhotos: [])=>{
           nextPageOfPhotos.forEach((photo, index) => {
@@ -148,7 +148,7 @@ export class OpportunityComponent implements OnInit, OnDestroy {
         }
       }
 
-    this.nasaApiService.getPageOfPhotosOfSol('opportunity', this.currentSol, this.currentPageOfSol)
+    this.nasaApiService.getPageOfPhotosOfSol('spirit', this.currentSol, this.currentPageOfSol)
       .subscribe(
         (photos: [])=>{
           if(photos.length === 0){

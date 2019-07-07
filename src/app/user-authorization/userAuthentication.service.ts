@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 })
 
 export class UserAuthenticationService {
-  userIsAuthenticated = new Subject();
+  userIsAuthenticated: boolean;
 
   constructor(private http: HttpClient) { }
   

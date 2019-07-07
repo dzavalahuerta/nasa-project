@@ -5,17 +5,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { APODComponent } from './apod/apod.component';
-import { HomePageComponent } from './home-page/home-page.component';
-import { SpiritComponent } from './rover-components/spirit/spirit.component';
-import { CuriosityComponent } from './rover-components/curiosity/curiosity.component';
-import { OpportunityComponent } from './rover-components/opportunity/opportunity.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { NavbarComponent } from './shared/navbar/navbar.component';
+import { APODComponent } from './NASA-api-content/apod/apod.component';
+import { HomePageComponent } from './user-authorization/home-page/home-page.component';
+import { SpiritComponent } from './NASA-api-content/rover-components/spirit/spirit.component';
+import { CuriosityComponent } from './NASA-api-content/rover-components/curiosity/curiosity.component';
+import { OpportunityComponent } from './NASA-api-content/rover-components/opportunity/opportunity.component';
+import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 
-import { NasaApiService } from './services/nasa-api.service';
-import { CrossComponentCommunicationService } from './services/cross-component-communication.service';
-import { UserAuthenticationService } from './services/userAuthentication.service';
+import { NasaApiService } from './NASA-api-content/nasa-api.service';
+import { CrossComponentCommunicationService } from './shared/cross-component-communication.service';
+import { UserAuthenticationService } from './user-authorization/userAuthentication.service';
 
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { SocialLoginModule, AuthServiceConfig } from "angularx-social-login";
@@ -23,6 +23,8 @@ import { GoogleLoginProvider, FacebookLoginProvider } from "angularx-social-logi
 import { AccountSettingsComponent } from './user-account/account-settings/account-settings.component';
 import { LinkSocialMediaComponent } from './user-account/link-social-media/link-social-media.component';
 import { ProfileComponent } from './user-account/profile/profile.component';
+import { AuthGuard } from './user-authorization/auth.guard';
+import { ContentGuard } from './user-authorization/content.guard';
  
  
 let config = new AuthServiceConfig([
@@ -41,18 +43,18 @@ export function provideConfig() {
 }
 
 const Routes = [
-  { path: '', component: HomePageComponent},
-  { path: 'apod', component: APODComponent},
+  { path: '', component: HomePageComponent, canActivate: [AuthGuard]},
+  { path: 'apod', component: APODComponent, canActivate: [ContentGuard]},
   { path: 'rovers', children: [
     {path: '', redirectTo: 'curiosity', pathMatch: 'full'},
-    { path: 'curiosity', component: CuriosityComponent },
-    { path: 'opportunity', component: OpportunityComponent },
-    { path: 'spirit', component: SpiritComponent }
+    { path: 'curiosity', component: CuriosityComponent, canActivate: [ContentGuard] },
+    { path: 'opportunity', component: OpportunityComponent, canActivate: [ContentGuard] },
+    { path: 'spirit', component: SpiritComponent, canActivate: [ContentGuard] }
   ]},
-  { path: 'account-settings', component: AccountSettingsComponent, children: [
+  { path: 'account-settings', component: AccountSettingsComponent, canActivate :[ContentGuard], children: [
     {path: '', redirectTo: 'profile', pathMatch: 'full'},
-    { path: 'profile', component: ProfileComponent },
-    { path: 'link-social-media', component: LinkSocialMediaComponent }
+    { path: 'profile', component: ProfileComponent, canActivate: [ContentGuard] },
+    { path: 'link-social-media', component: LinkSocialMediaComponent, canActivate: [ContentGuard] }
   ]},
   { path: '**', component: PageNotFoundComponent}
 ]

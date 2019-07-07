@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { NasaApiService } from './nasa-api.service';
+import { NasaApiService } from '../NASA-api-content/nasa-api.service';
 
 @Injectable()
 export class CrossComponentCommunicationService {

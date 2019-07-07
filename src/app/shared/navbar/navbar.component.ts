@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
+import { CrossComponentCommunicationService } from '../../shared/cross-component-communication.service';
 import { Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UserAuthenticationService } from '../services/userAuthentication.service';
+import { UserAuthenticationService } from '../../user-authorization/userAuthentication.service';
 
 @Component({
   selector: 'app-navbar',
@@ -48,11 +48,7 @@ export class NavbarComponent implements OnInit {
           }
         );
 
-    this.userAuthService.userIsAuthenticated.subscribe(
-      (status: boolean)=>{
-        this.userIsAuthenticated = status;
-      }
-    );
+    this.userIsAuthenticated = this.userAuthService.userIsAuthenticated;
 
     this.searchForm = new FormGroup({
       'searchFormInput': new FormControl(null, [Validators.required], this.invalidDate)
@@ -79,7 +75,7 @@ export class NavbarComponent implements OnInit {
     this.userAuthService.logInLocalStrategy(this.logInForm.value).subscribe(
       ()=>{
         this.invalidUserCredentials = false;
-        this.userAuthService.userIsAuthenticated.next(true);
+        this.userAuthService.userIsAuthenticated = true;
         this.logInForm.reset();
         this.router.navigate(['/apod'], { relativeTo: this.route });
       },
@@ -92,7 +88,8 @@ export class NavbarComponent implements OnInit {
   onLogOut(){
     this.userAuthService.logOut().subscribe(
       ()=>{
-        this.userAuthService.userIsAuthenticated.next(false);
+        this.userAuthService.userIsAuthenticated = false;
+        this.router.navigate(['/']);
       },
       (error)=>{
         console.error(error);

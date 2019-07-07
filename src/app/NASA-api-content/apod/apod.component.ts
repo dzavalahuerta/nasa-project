@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { NasaApiService } from '../services/nasa-api.service';
+import { NasaApiService } from '../nasa-api.service';
 import { DomSanitizer } from '@angular/platform-browser';
-import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
+import { CrossComponentCommunicationService } from '../../shared/cross-component-communication.service';
 
 @Component({
   selector: 'app-apod',
@@ -127,6 +127,7 @@ export class APODComponent implements OnInit, OnDestroy {
   }
 
   getTenMoreApod(){
+    console.log('triggered');
     this.infiniteScrollToggle = true;
 
     let dateForNextBatch = this.getDateForNextBatch();

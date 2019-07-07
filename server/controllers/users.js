@@ -98,7 +98,6 @@ module.exports = {
     },
 
     getUserAuthenticationStatusAndMethods: async(req,res,next)=>{
-        console.log(req.user.methods)
         res.status(200).json({ methods: req.user.methods });
     }
 }

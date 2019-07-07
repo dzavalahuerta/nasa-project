@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
-import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
+import { CrossComponentCommunicationService } from '../../shared/cross-component-communication.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UserAuthenticationService } from '../services/userAuthentication.service';
+import { UserAuthenticationService } from '../userAuthentication.service';
 import { AuthService } from "angularx-social-login";
 import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-login";
 
@@ -25,14 +25,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.cccService.currentlyOnHomePageRoute(true);
 
-    this.userAuthService.userIsAuthenticated.subscribe(
-      (status)=>{
-        if(status === true){
-          this.router.navigate(['/apod']);
-        }
-      }
-    );
-
     this.signUpForm = new FormGroup({
       'email': new FormControl(null, [Validators.required, Validators.email]),
       'password': new FormControl(null, [Validators.required, Validators.minLength(6)])
@@ -44,7 +36,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       ()=>{
         this.invalidEmail = false;
         this.emailInUse = false;
-        this.userAuthService.userIsAuthenticated.next(true);
+        this.userAuthService.userIsAuthenticated = true;
         this.router.navigate(['/apod'], { relativeTo: this.route });
       },
       error=>{
@@ -63,7 +55,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       let res = await this.socialLoginService.signIn(GoogleLoginProvider.PROVIDER_ID);
       this.userAuthService.signInGoogle(res.authToken).subscribe(
         ()=>{
-          this.userAuthService.userIsAuthenticated.next(true);
+          this.userAuthService.userIsAuthenticated = true;
           this.router.navigate(['/apod'], { relativeTo: this.route });
         },
         (error)=>{
@@ -81,7 +73,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       let res = await this.socialLoginService.signIn(FacebookLoginProvider.PROVIDER_ID);
       this.userAuthService.signInFacebook(res.authToken).subscribe(
         ()=>{
-          this.userAuthService.userIsAuthenticated.next(true);
+          this.userAuthService.userIsAuthenticated = true;
           this.router.navigate(['/apod'], { relativeTo: this.route });
         },
         (error)=>{

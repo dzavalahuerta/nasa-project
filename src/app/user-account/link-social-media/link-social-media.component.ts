@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'angularx-social-login';
-import { UserAuthenticationService } from 'src/app/services/userAuthentication.service';
+import { UserAuthenticationService } from 'src/app/user-authorization/userAuthentication.service';
 import { FacebookLoginProvider, GoogleLoginProvider } from "angularx-social-login";
 
 @Component({
@@ -14,7 +14,7 @@ export class LinkSocialMediaComponent implements OnInit {
   constructor(private userAuthService: UserAuthenticationService,
               private socialLoginService: AuthService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.userAuthService.getUserAuthenticationStatusAndMethods().subscribe(
       (res:{methods: string[]})=>{
         this.userAuthenticationMethods = res.methods;

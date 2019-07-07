@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CrossComponentCommunicationService } from '../services/cross-component-communication.service';
+import { CrossComponentCommunicationService } from '../cross-component-communication.service';
 
 @Component({
   selector: 'app-page-not-found',
