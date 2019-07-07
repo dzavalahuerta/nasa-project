@@ -31,6 +31,7 @@ export class APODComponent implements OnInit, OnDestroy {
   }
   
   ngOnInit() {
+    window.document.body.style.overflow = "hidden";
     window.addEventListener('scroll', this.checkPageYOffset, true);
     
     this.cccService.currentlyOnApodRoute(true);
@@ -74,6 +75,7 @@ export class APODComponent implements OnInit, OnDestroy {
           }
           if(index === tenApodArray.length-1){
             this.noScroll = false;
+            window.document.body.style.overflow = "visible";
           }
         });
       },
@@ -92,6 +94,10 @@ export class APODComponent implements OnInit, OnDestroy {
 
   getDateForNextBatch(){
     let indexOfLastAPOD = this.apodArray.length-1;
+    if(indexOfLastAPOD === -1){
+      return -1;
+    }
+    
     let lastAPOD: {date: string} = this.apodArray[indexOfLastAPOD];
     let lastAPODDate = new Date(lastAPOD.date);
     let lastAPODYear = lastAPODDate.getFullYear();
@@ -103,19 +109,19 @@ export class APODComponent implements OnInit, OnDestroy {
       }
       else{
           lastAPODMonth = 12;
-      }
+        }
       if(lastAPODMonth === 2){
-          lastAPODDay = 28;
+        lastAPODDay = 28;
       }
       else if(lastAPODMonth === 4 || lastAPODMonth === 6 || lastAPODMonth === 9 || lastAPODMonth === 11){
           lastAPODDay = 30;
-      }
+        }
       else{
-          lastAPODDay = 31;
+        lastAPODDay = 31;
       }
       
       if(lastAPODMonth === 12 && lastAPODDay === 31){
-          lastAPODYear -= 1;
+        lastAPODYear -= 1;
       }
     }
     else if(lastAPODMonth >= 10 && lastAPODDay >= 11){
@@ -127,11 +133,14 @@ export class APODComponent implements OnInit, OnDestroy {
   }
 
   getTenMoreApod(){
-    console.log('triggered');
     this.infiniteScrollToggle = true;
 
     let dateForNextBatch = this.getDateForNextBatch();
-    
+    if(dateForNextBatch === -1){
+      this.infiniteScrollToggle = false;
+      return;
+    }
+
     if(dateForNextBatch === '1996-01-01'){
       this.infiniteScrollToggle = false;
       this.spinner.nativeElement.style.visibility = "hidden";
