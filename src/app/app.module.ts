@@ -44,7 +44,7 @@ export function provideConfig() {
 
 const Routes = [
   { path: '', component: HomePageComponent, canActivate: [AuthGuard]},
-  { path: 'apod', component: APODComponent},
+  { path: 'apod', component: APODComponent, canActivate: [ContentGuard] },
   { path: 'rovers', children: [
     {path: '', redirectTo: 'curiosity', pathMatch: 'full'},
     { path: 'curiosity', component: CuriosityComponent, canActivate: [ContentGuard] },
