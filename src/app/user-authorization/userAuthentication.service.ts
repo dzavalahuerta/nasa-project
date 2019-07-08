@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 
 export class UserAuthenticationService {
   userIsAuthenticated: boolean;
+  userAuthenticationMethods: string[] = [''];
 
   constructor(private http: HttpClient) { }
   

@@ -1,4 +1,4 @@
-<nav *ngIf="!homePageRoute || pageNotFoundRoute && userIsAuthenticated" class="navbar navbar-expand-lg navbar-dark fixed-top logged-in-nav">
+<nav *ngIf="!homePageRoute && userIsAuthenticated || pageNotFoundRoute && userIsAuthenticated" class="navbar navbar-expand-lg navbar-dark fixed-top logged-in-nav">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -57,7 +57,7 @@
   </div>
 </nav>
 
-<nav *ngIf="homePageRoute || pageNotFoundRoute && !userIsAuthenticated" class="navbar navbar-expand-lg navbar-dark fixed-top home-page-nav">
+<nav *ngIf="homePageRoute && !userIsAuthenticated || pageNotFoundRoute && !userIsAuthenticated" class="navbar navbar-expand-lg navbar-dark fixed-top home-page-nav">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>

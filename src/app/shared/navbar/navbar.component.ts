@@ -49,7 +49,7 @@ export class NavbarComponent implements OnInit {
         );
 
     this.userIsAuthenticated = this.userAuthService.userIsAuthenticated;
-
+    
     this.searchForm = new FormGroup({
       'searchFormInput': new FormControl(null, [Validators.required], this.invalidDate)
     });

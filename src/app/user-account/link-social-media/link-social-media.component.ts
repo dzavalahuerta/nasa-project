@@ -14,15 +14,8 @@ export class LinkSocialMediaComponent implements OnInit {
   constructor(private userAuthService: UserAuthenticationService,
               private socialLoginService: AuthService) { }
 
-  async ngOnInit() {
-    this.userAuthService.getUserAuthenticationStatusAndMethods().subscribe(
-      (res:{methods: string[]})=>{
-        this.userAuthenticationMethods = res.methods;
-      },
-      (error)=>{
-        alert(error);
-      }
-    );
+  ngOnInit() {
+    this.userAuthenticationMethods = this.userAuthService.userAuthenticationMethods;
   }
 
   async linkGoogleAccount(){

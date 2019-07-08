@@ -14,15 +14,11 @@ export class AuthGuard implements  CanActivate{
     try {
       await this.userAuthService.getUserAuthenticationStatusAndMethods().toPromise();
       this.userAuthService.userIsAuthenticated = true;
+      this.router.navigate(['/apod']);
     }
     catch (error) {
       this.userAuthService.userIsAuthenticated = false; 
-    }
-    if(this.userAuthService.userIsAuthenticated){
-      this.router.navigate(['/apod']);
-    }
-    else{
-      return !this.userAuthService.userIsAuthenticated;
+      return true;
     }
   }
 }

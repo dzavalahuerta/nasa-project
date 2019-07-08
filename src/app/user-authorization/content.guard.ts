@@ -13,17 +13,14 @@ export class ContentGuard implements CanActivate {
   
   async canActivate(){
     try {
-      await this.userAuthService.getUserAuthenticationStatusAndMethods().toPromise();
+      let res:any = await this.userAuthService.getUserAuthenticationStatusAndMethods().toPromise();
       this.userAuthService.userIsAuthenticated = true;
+      this.userAuthService.userAuthenticationMethods = res.methods;
+      return true;
     }
     catch (error) {
       this.userAuthService.userIsAuthenticated = false; 
-    }
-    if(!this.userAuthService.userIsAuthenticated){
       this.router.navigate(['/']);
-    }
-    else{
-      return this.userAuthService.userIsAuthenticated;
     }
   }
 }
