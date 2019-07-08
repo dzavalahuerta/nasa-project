@@ -48,7 +48,11 @@ export class NavbarComponent implements OnInit {
           }
         );
 
-    this.userIsAuthenticated = this.userAuthService.userIsAuthenticated;
+    this.userAuthService.userIsAuthenticated.subscribe(
+      (status: boolean)=>{
+        this.userIsAuthenticated = status;
+      }
+    );
     
     this.searchForm = new FormGroup({
       'searchFormInput': new FormControl(null, [Validators.required], this.invalidDate)
@@ -75,7 +79,7 @@ export class NavbarComponent implements OnInit {
     this.userAuthService.logInLocalStrategy(this.logInForm.value).subscribe(
       ()=>{
         this.invalidUserCredentials = false;
-        this.userAuthService.userIsAuthenticated = true;
+        this.userAuthService.userIsAuthenticated.next(true);
         this.logInForm.reset();
         this.router.navigate(['/apod'], { relativeTo: this.route });
       },
@@ -88,7 +92,7 @@ export class NavbarComponent implements OnInit {
   onLogOut(){
     this.userAuthService.logOut().subscribe(
       ()=>{
-        this.userAuthService.userIsAuthenticated = false;
+        this.userAuthService.userIsAuthenticated.next(false);
         this.router.navigate(['/']);
       },
       (error)=>{

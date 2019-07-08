@@ -36,7 +36,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       ()=>{
         this.invalidEmail = false;
         this.emailInUse = false;
-        this.userAuthService.userIsAuthenticated = true;
+        this.userAuthService.userIsAuthenticated.next(true);
         this.router.navigate(['/apod'], { relativeTo: this.route });
       },
       error=>{
@@ -55,7 +55,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       let res = await this.socialLoginService.signIn(GoogleLoginProvider.PROVIDER_ID);
       this.userAuthService.signInGoogle(res.authToken).subscribe(
         ()=>{
-          this.userAuthService.userIsAuthenticated = true;
+          this.userAuthService.userIsAuthenticated.next(true);
           this.router.navigate(['/apod'], { relativeTo: this.route });
         },
         (error)=>{
@@ -73,7 +73,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       let res = await this.socialLoginService.signIn(FacebookLoginProvider.PROVIDER_ID);
       this.userAuthService.signInFacebook(res.authToken).subscribe(
         ()=>{
-          this.userAuthService.userIsAuthenticated = true;
+          this.userAuthService.userIsAuthenticated.next(true);
           this.router.navigate(['/apod'], { relativeTo: this.route });
         },
         (error)=>{

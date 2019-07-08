@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -6,11 +6,20 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 
-export class UserAuthenticationService {
-  userIsAuthenticated: boolean;
+export class UserAuthenticationService implements OnInit {
+  userIsAuthenticated = new Subject();
+  // userIsAuthenticated: boolean;
   userAuthenticationMethods: string[] = [''];
 
   constructor(private http: HttpClient) { }
+  
+  ngOnInit(){
+    // this.userIsAuthenticatedController.subscribe(
+    //   (status: boolean)=>{
+    //     this.userIsAuthenticated = status;
+    //   }
+    // );
+  }
   
   getUserAuthenticationStatusAndMethods(){
     return this.http.get('/users/get-user-authentication-status-and-methods');
